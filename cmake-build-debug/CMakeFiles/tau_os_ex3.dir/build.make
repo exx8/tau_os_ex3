@@ -77,30 +77,60 @@ include CMakeFiles/tau_os_ex3.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/tau_os_ex3.dir/flags.make
 
-CMakeFiles/tau_os_ex3.dir/main.c.o: CMakeFiles/tau_os_ex3.dir/flags.make
-CMakeFiles/tau_os_ex3.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/tau_os_ex3.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tau_os_ex3.dir/main.c.o   -c /home/eran/CLionProjects/tau_os_ex3/main.c
+CMakeFiles/tau_os_ex3.dir/message_slot.c.o: CMakeFiles/tau_os_ex3.dir/flags.make
+CMakeFiles/tau_os_ex3.dir/message_slot.c.o: ../message_slot.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/tau_os_ex3.dir/message_slot.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tau_os_ex3.dir/message_slot.c.o   -c /home/eran/CLionProjects/tau_os_ex3/message_slot.c
 
-CMakeFiles/tau_os_ex3.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tau_os_ex3.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/eran/CLionProjects/tau_os_ex3/main.c > CMakeFiles/tau_os_ex3.dir/main.c.i
+CMakeFiles/tau_os_ex3.dir/message_slot.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tau_os_ex3.dir/message_slot.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/eran/CLionProjects/tau_os_ex3/message_slot.c > CMakeFiles/tau_os_ex3.dir/message_slot.c.i
 
-CMakeFiles/tau_os_ex3.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tau_os_ex3.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/eran/CLionProjects/tau_os_ex3/main.c -o CMakeFiles/tau_os_ex3.dir/main.c.s
+CMakeFiles/tau_os_ex3.dir/message_slot.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tau_os_ex3.dir/message_slot.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/eran/CLionProjects/tau_os_ex3/message_slot.c -o CMakeFiles/tau_os_ex3.dir/message_slot.c.s
+
+CMakeFiles/tau_os_ex3.dir/message_sender.c.o: CMakeFiles/tau_os_ex3.dir/flags.make
+CMakeFiles/tau_os_ex3.dir/message_sender.c.o: ../message_sender.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tau_os_ex3.dir/message_sender.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tau_os_ex3.dir/message_sender.c.o   -c /home/eran/CLionProjects/tau_os_ex3/message_sender.c
+
+CMakeFiles/tau_os_ex3.dir/message_sender.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tau_os_ex3.dir/message_sender.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/eran/CLionProjects/tau_os_ex3/message_sender.c > CMakeFiles/tau_os_ex3.dir/message_sender.c.i
+
+CMakeFiles/tau_os_ex3.dir/message_sender.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tau_os_ex3.dir/message_sender.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/eran/CLionProjects/tau_os_ex3/message_sender.c -o CMakeFiles/tau_os_ex3.dir/message_sender.c.s
+
+CMakeFiles/tau_os_ex3.dir/message_reader.c.o: CMakeFiles/tau_os_ex3.dir/flags.make
+CMakeFiles/tau_os_ex3.dir/message_reader.c.o: ../message_reader.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/tau_os_ex3.dir/message_reader.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tau_os_ex3.dir/message_reader.c.o   -c /home/eran/CLionProjects/tau_os_ex3/message_reader.c
+
+CMakeFiles/tau_os_ex3.dir/message_reader.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tau_os_ex3.dir/message_reader.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/eran/CLionProjects/tau_os_ex3/message_reader.c > CMakeFiles/tau_os_ex3.dir/message_reader.c.i
+
+CMakeFiles/tau_os_ex3.dir/message_reader.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tau_os_ex3.dir/message_reader.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/eran/CLionProjects/tau_os_ex3/message_reader.c -o CMakeFiles/tau_os_ex3.dir/message_reader.c.s
 
 # Object files for target tau_os_ex3
 tau_os_ex3_OBJECTS = \
-"CMakeFiles/tau_os_ex3.dir/main.c.o"
+"CMakeFiles/tau_os_ex3.dir/message_slot.c.o" \
+"CMakeFiles/tau_os_ex3.dir/message_sender.c.o" \
+"CMakeFiles/tau_os_ex3.dir/message_reader.c.o"
 
 # External object files for target tau_os_ex3
 tau_os_ex3_EXTERNAL_OBJECTS =
 
-tau_os_ex3: CMakeFiles/tau_os_ex3.dir/main.c.o
+tau_os_ex3: CMakeFiles/tau_os_ex3.dir/message_slot.c.o
+tau_os_ex3: CMakeFiles/tau_os_ex3.dir/message_sender.c.o
+tau_os_ex3: CMakeFiles/tau_os_ex3.dir/message_reader.c.o
 tau_os_ex3: CMakeFiles/tau_os_ex3.dir/build.make
 tau_os_ex3: CMakeFiles/tau_os_ex3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable tau_os_ex3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable tau_os_ex3"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tau_os_ex3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

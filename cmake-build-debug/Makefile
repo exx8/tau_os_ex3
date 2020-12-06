@@ -143,32 +143,86 @@ tau_os_ex3/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/build
 .PHONY : tau_os_ex3/fast
 
-main.o: main.c.o
+message_reader.o: message_reader.c.o
 
-.PHONY : main.o
+.PHONY : message_reader.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/main.c.o
-.PHONY : main.c.o
+message_reader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_reader.c.o
+.PHONY : message_reader.c.o
 
-main.i: main.c.i
+message_reader.i: message_reader.c.i
 
-.PHONY : main.i
+.PHONY : message_reader.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/main.c.i
-.PHONY : main.c.i
+message_reader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_reader.c.i
+.PHONY : message_reader.c.i
 
-main.s: main.c.s
+message_reader.s: message_reader.c.s
 
-.PHONY : main.s
+.PHONY : message_reader.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/main.c.s
-.PHONY : main.c.s
+message_reader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_reader.c.s
+.PHONY : message_reader.c.s
+
+message_sender.o: message_sender.c.o
+
+.PHONY : message_sender.o
+
+# target to build an object file
+message_sender.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_sender.c.o
+.PHONY : message_sender.c.o
+
+message_sender.i: message_sender.c.i
+
+.PHONY : message_sender.i
+
+# target to preprocess a source file
+message_sender.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_sender.c.i
+.PHONY : message_sender.c.i
+
+message_sender.s: message_sender.c.s
+
+.PHONY : message_sender.s
+
+# target to generate assembly for a file
+message_sender.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_sender.c.s
+.PHONY : message_sender.c.s
+
+message_slot.o: message_slot.c.o
+
+.PHONY : message_slot.o
+
+# target to build an object file
+message_slot.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_slot.c.o
+.PHONY : message_slot.c.o
+
+message_slot.i: message_slot.c.i
+
+.PHONY : message_slot.i
+
+# target to preprocess a source file
+message_slot.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_slot.c.i
+.PHONY : message_slot.c.i
+
+message_slot.s: message_slot.c.s
+
+.PHONY : message_slot.s
+
+# target to generate assembly for a file
+message_slot.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tau_os_ex3.dir/build.make CMakeFiles/tau_os_ex3.dir/message_slot.c.s
+.PHONY : message_slot.c.s
 
 # Help Target
 help:
@@ -179,9 +233,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... tau_os_ex3"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... message_reader.o"
+	@echo "... message_reader.i"
+	@echo "... message_reader.s"
+	@echo "... message_sender.o"
+	@echo "... message_sender.i"
+	@echo "... message_sender.s"
+	@echo "... message_slot.o"
+	@echo "... message_slot.i"
+	@echo "... message_slot.s"
 .PHONY : help
 
 

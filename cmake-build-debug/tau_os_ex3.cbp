@@ -76,7 +76,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/main.c">
+		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/message_reader.c">
+			<Option target="tau_os_ex3"/>
+		</Unit>
+		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/message_sender.c">
+			<Option target="tau_os_ex3"/>
+		</Unit>
+		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/message_slot.c">
+			<Option target="tau_os_ex3"/>
+		</Unit>
+		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/message_slot.h">
 			<Option target="tau_os_ex3"/>
 		</Unit>
 		<Unit filename="/home/eran/CLionProjects/tau_os_ex3/CMakeLists.txt">

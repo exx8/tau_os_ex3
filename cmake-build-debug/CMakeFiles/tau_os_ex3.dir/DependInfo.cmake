@@ -4,7 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/eran/CLionProjects/tau_os_ex3/main.c" "/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles/tau_os_ex3.dir/main.c.o"
+  "/home/eran/CLionProjects/tau_os_ex3/message_reader.c" "/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles/tau_os_ex3.dir/message_reader.c.o"
+  "/home/eran/CLionProjects/tau_os_ex3/message_sender.c" "/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles/tau_os_ex3.dir/message_sender.c.o"
+  "/home/eran/CLionProjects/tau_os_ex3/message_slot.c" "/home/eran/CLionProjects/tau_os_ex3/cmake-build-debug/CMakeFiles/tau_os_ex3.dir/message_slot.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

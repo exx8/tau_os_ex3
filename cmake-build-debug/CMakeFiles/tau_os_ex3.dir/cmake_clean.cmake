@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/tau_os_ex3.dir/main.c.o"
+  "CMakeFiles/tau_os_ex3.dir/message_reader.c.o"
+  "CMakeFiles/tau_os_ex3.dir/message_sender.c.o"
+  "CMakeFiles/tau_os_ex3.dir/message_slot.c.o"
   "tau_os_ex3"
   "tau_os_ex3.pdb"
 )
