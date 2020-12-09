@@ -7,30 +7,18 @@
 #include <errno.h>
 #include "sys/types.h"
 #include "linux/list.h"
-
+#include "linux/slab.h"
 typedef struct {
     struct list_head list;
 
 } msg_lst;
-typedef struct {
-    struct list_head  list;
-    int id;
-    msg_lst * chnl_msg_lst;
-} chnl_lst;
 
+static msg_lst * channel_list;
 static int device_open(struct inode *inode, struct file *file) {
-    static struct llist_head driver_channel_list;
-    static bool inited = false;
-    if (inited) {
-        init_llist_head(&driver_channel_list);
-        inited = true;
-    }
+      msg_lst * channel_list=kcalloc(sizeof(msg_lst ),256,GFP_KERNEL);
+
     unsigned int minor = iminor(inode);
-    chnl_lst new_channel;
-    new_channel.id=minor;
-    new_channel.chnl_msg_lst=NULL;
-    init_llist_head(&new_channel.list);
-    list_add(&new_channel,&driver_channel_list);
+
 
 
 }
