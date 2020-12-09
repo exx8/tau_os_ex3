@@ -8,17 +8,21 @@
 #include "sys/types.h"
 #include "linux/list.h"
 #include "linux/slab.h"
+
 typedef struct {
     struct list_head list;
 
 } msg_lst;
 
-static msg_lst * channel_list;
+static msg_lst *channel_list;
+
 static int device_open(struct inode *inode, struct file *file) {
-      msg_lst * channel_list=kcalloc(sizeof(msg_lst ),256,GFP_KERNEL);
+    msg_lst **channel_list = kcalloc(sizeof(msg_lst), 256, GFP_KERNEL);
 
     unsigned int minor = iminor(inode);
+    if (channel_list[minor] == NULL) {
 
+    }
 
 
 }
