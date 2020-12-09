@@ -6,4 +6,4 @@
 #define TAU_OS_EX3_MESSAGE_SLOT_H
 
 #endif //TAU_OS_EX3_MESSAGE_SLOT_H
-#define minor_number 240
+#define major_number 240
