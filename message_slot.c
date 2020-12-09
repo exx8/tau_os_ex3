@@ -8,7 +8,6 @@
 #include "sys/types.h"
 #include "linux/list.h"
 
-static struct list_head *general_channel_list = NULL;
 typedef struct {
     struct list_head list;
 
@@ -20,11 +19,16 @@ typedef struct {
 } chnl_lst;
 
 static int device_open(struct inode *inode, struct file *file) {
-    if (hash == NULL) {
-        DECLARE_HASHTABLE(hash, 20);
-        hash_init(hash);
-        hash_add(hash, NULL, 1);
+    static struct llist_head driver_channel_list;
+    static bool inited = false;
+    if (inited) {
+        init_llist_head(&driver_channel_list);
+        inited = true;
     }
+   unsigned int minor= iminor(inode);
+
+
+
 
 }
 
