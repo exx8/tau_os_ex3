@@ -12,6 +12,8 @@ set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
+  "/usr/src/linux-headers-5.4.0-56-generic/include"
+  "../usr/src/linux-headers-5.4.0-56-generic/arch/ia64/include"
   )
 
 # Targets to which this target links.

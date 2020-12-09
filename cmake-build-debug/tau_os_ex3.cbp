@@ -44,6 +44,8 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/usr/src/linux-headers-5.4.0-56-generic/include"/>
+					<Add directory="/home/eran/CLionProjects/tau_os_ex3/usr/src/linux-headers-5.4.0-56-generic/arch/ia64/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -63,6 +65,8 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/usr/src/linux-headers-5.4.0-56-generic/include"/>
+					<Add directory="/home/eran/CLionProjects/tau_os_ex3/usr/src/linux-headers-5.4.0-56-generic/arch/ia64/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>

@@ -7,3 +7,4 @@
 
 #endif //TAU_OS_EX3_MESSAGE_SLOT_H
 #define major_number 240
+#define MSG_SLOT_CHANNEL 1
