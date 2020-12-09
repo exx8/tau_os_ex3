@@ -13,9 +13,9 @@ typedef struct {
 
 } msg_lst;
 typedef struct {
-    struct list_head list;
+    struct list_head  list;
     int id;
-    msg_lst chnl_msg_lst;
+    msg_lst * chnl_msg_lst;
 } chnl_lst;
 
 static int device_open(struct inode *inode, struct file *file) {
@@ -26,6 +26,11 @@ static int device_open(struct inode *inode, struct file *file) {
         inited = true;
     }
     unsigned int minor = iminor(inode);
+    chnl_lst new_channel;
+    new_channel.id=minor;
+    new_channel.chnl_msg_lst=NULL;
+    init_llist_head(&new_channel.list);
+    list_add(&new_channel,&driver_channel_list);
 
 
 }
