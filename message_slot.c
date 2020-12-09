@@ -25,9 +25,7 @@ static int device_open(struct inode *inode, struct file *file) {
         init_llist_head(&driver_channel_list);
         inited = true;
     }
-   unsigned int minor= iminor(inode);
-
-
+    unsigned int minor = iminor(inode);
 
 
 }
