@@ -6,15 +6,24 @@
 #include <linux/string.h>
 #include <errno.h>
 #include "sys/types.h"
-#include "linux/hashtable.h"
+#include "linux/list.h"
 
-static hash = NULL;
+static struct list_head *general_channel_list = NULL;
+typedef struct {
+    struct list_head list;
+
+} msg_lst;
+typedef struct {
+    struct list_head list;
+    int id;
+    msg_lst chnl_msg_lst;
+} chnl_lst;
 
 static int device_open(struct inode *inode, struct file *file) {
     if (hash == NULL) {
         DECLARE_HASHTABLE(hash, 20);
         hash_init(hash);
-        hash_add(hash,NULL,1);
+        hash_add(hash, NULL, 1);
     }
 
 }
