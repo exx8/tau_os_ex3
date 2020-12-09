@@ -17,7 +17,7 @@ typedef struct {
 static msg_lst *channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
-    msg_lst **channel_list = kcalloc(sizeof(msg_lst), 256, GFP_KERNEL);
+    msg_lst **channel_list = kcalloc(sizeof(msg_lst*), 256, GFP_KERNEL);
 
     unsigned int minor = iminor(inode);
     if (channel_list[minor] == NULL) {
