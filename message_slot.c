@@ -11,14 +11,16 @@
 
 typedef struct {
     struct list_head list;
+    char msg[128];
+    short len;
 
-} msg_lst;
+} msg;
 
-static msg_lst *channel_list;
+static msg *channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
-    //  msg_lst **channel_list = kcalloc(sizeof(msg_lst*), 256, GFP_KERNEL);
-    struct list_head **channel_list = kcalloc(sizeof(channel_list * ), 256, GFP_KERNEL);
+    //  msg **channel_list = kcalloc(sizeof(msg*), 256, GFP_KERNEL);
+    struct list_head **channel_list = kcalloc(sizeof(*channel_list  ), 256, GFP_KERNEL);
     unsigned int minor = iminor(inode);
     if (channel_list[minor] == NULL) {
         channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
