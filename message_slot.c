@@ -8,10 +8,11 @@
 #include "sys/types.h"
 #include "linux/list.h"
 #include "linux/slab.h"
-
+#include "linux/uaccess.h"
+#define msg_len 128
 typedef struct {
     struct list_head list;
-    char msg[128];
+    char msg[msg_len];
     short len;
 
 } msg;
@@ -20,12 +21,14 @@ static msg *channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
     //  msg **channel_list = kcalloc(sizeof(msg*), 256, GFP_KERNEL);
-    struct list_head **channel_list = kcalloc(sizeof(*channel_list  ), 256, GFP_KERNEL);
+    struct list_head **channel_list = kcalloc(sizeof(*channel_list), 256, GFP_KERNEL);
     unsigned int minor = iminor(inode);
     if (channel_list[minor] == NULL) {
         channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
 
     }
+
+    file->private_data->channel_id = minor;
 
 
 }
@@ -35,12 +38,21 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 }
 
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
+    if (buffer == NULL)
+        return -EINVAL;
+    const int channel_id = file->private_data->channel_id;
+    if (length == 0 || length > msg_len)
+        return -EMSGSIZE;
+    msg * new_msg=kcalloc(sizeof(new_msg),1,GFP_KERNEL);
+    char * priv_buffer=kmalloc(sizeof(char ),msg_len);
+    for(int i=0;i<msg_len;i++)
+        get_user(priv_buffer[i], &buffer[i]);
+    list_add(&channel_list[channel_id].list,&new_msg->list);
 
 }
 
 static long invalid_ioctl() {
-    errno = EINVAL;
-    return -1;
+    return -EINVAL;
 }
 
 static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsigned long channel) {
