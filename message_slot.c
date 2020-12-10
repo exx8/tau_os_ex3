@@ -17,10 +17,11 @@ typedef struct {
 static msg_lst *channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
-    msg_lst **channel_list = kcalloc(sizeof(msg_lst*), 256, GFP_KERNEL);
-
+    //  msg_lst **channel_list = kcalloc(sizeof(msg_lst*), 256, GFP_KERNEL);
+    struct list_head **channel_list = kcalloc(sizeof(channel_list * ), 256, GFP_KERNEL);
     unsigned int minor = iminor(inode);
     if (channel_list[minor] == NULL) {
+        channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
 
     }
 
@@ -49,12 +50,17 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 }
 
+static int release(struct inode *, struct file *) {
+
+}
+
 struct file_operations Fops =
         {
                 .owner      = THIS_MODULE, // Required for correct count of module usage. This prevents the module from being removed while used.
                 .read           = device_read,
                 .write          = device_write,
                 .open           = device_open,
+                .release        = device_release
 
         };
 
