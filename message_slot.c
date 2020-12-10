@@ -50,7 +50,7 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 }
 
-static int release(struct inode *, struct file *) {
+static int device_release(struct inode *, struct file *) {
 
 }
 
