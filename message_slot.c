@@ -9,6 +9,7 @@
 #include "linux/list.h"
 #include "linux/slab.h"
 #include "linux/uaccess.h"
+
 #define msg_len 128
 typedef struct {
     struct list_head list;
@@ -38,17 +39,18 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 }
 
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
+    int i;
     if (buffer == NULL)
         return -EINVAL;
     const int channel_id = file->private_data->channel_id;
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
-    msg * new_msg=kcalloc(sizeof(new_msg),1,GFP_KERNEL);
-    char * priv_buffer=kmalloc(sizeof(char ),msg_len);
-    for(int i=0;i<msg_len;i++)
+    msg *new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
+    char *priv_buffer = kmalloc(sizeof(char), msg_len);
+    for (i = 0; i < msg_len; i++)
         get_user(priv_buffer[i], &buffer[i]);
-    list_add(&channel_list[channel_id].list,&new_msg->list);
-
+    list_add(&channel_list[channel_id].list, &new_msg->list);
+    return i;
 }
 
 static long invalid_ioctl() {
