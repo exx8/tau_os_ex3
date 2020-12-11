@@ -58,6 +58,8 @@ static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
 }
 
 static ssize_t device_read(struct file *file, char __user *buffer, size_t length, loff_t *offset) {
+    if (no_channel(file))
+        return -EINVAL;
     unsigned int minor = file->private_data->channel_id;
     msg *entry = get_entry_by_minor(buffer, minor);
     for (short i = 0; i < entry->len; i++)
@@ -127,7 +129,8 @@ struct file_operations Fops =
                 .read           = device_read,
                 .write          = device_write,
                 .open           = device_open,
-                .release        = device_release
+                .release        = device_release,
+                .unlocked_ioctl=device_ioctl
 
         };
 
