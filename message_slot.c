@@ -22,7 +22,6 @@ typedef struct {
 static struct msg **channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
-    //  msg **channel_list = kcalloc(sizeof(msg*), 256, GFP_KERNEL);
     channel_list = kcalloc(sizeof(*channel_list), 256, GFP_KERNEL);
 
 
