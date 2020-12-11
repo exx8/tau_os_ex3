@@ -16,19 +16,24 @@
 #define msg_len 128
 typedef struct {
     struct list_head list;
-    char msg[msg_len];
+    char msg_value[msg_len];
     short len;
     unsigned int minor;
 
 } msg;
 
-static struct msg **channel_list;
+static struct msg **minor_arr;
+
+static unsigned int get_minor(const struct file *file) {
+    unsigned int minor = iminor(file);
+    return minor;
+}
 
 static int device_open(struct inode *inode, struct file *file) {
-    channel_list = kcalloc(sizeof(*channel_list), channel_num, GFP_KERNEL);
-    unsigned int minor = iminor(file);
-    if (channel_list[minor] == NULL) {
-        channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
+    minor_arr = kcalloc(sizeof(*minor_arr), channel_num, GFP_KERNEL);
+    unsigned int minor = get_minor(file);
+    if (minor_arr[minor] == NULL) {
+        minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
 
     }
 
@@ -36,7 +41,7 @@ static int device_open(struct inode *inode, struct file *file) {
 
 static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
     struct list_head *pos;
-    msg * msg_list = (channel_list[minor]);
+    msg * msg_list = (minor_arr[minor]);
 
     list_for_each(pos, &msg_list->list) {
 
@@ -54,7 +59,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     unsigned int minor = file->private_data->channel_id;
     msg *entry = get_entry_by_minor(buffer, minor);
     for (short i = 0; i < entry->len; i++)
-        put_user(&entry->msg[i], &buffer[i]);
+        put_user(&entry->msg_value[i], &buffer[i]);
     kfree(entry); //might it be free?
 }
 
@@ -70,7 +75,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     char *priv_buffer = kmalloc(sizeof(char), msg_len);
     for (i = 0; i < msg_len; i++)
         get_user(priv_buffer[i], &buffer[i]);
-    list_add(&channel_list[minor], &new_msg->list);
+    list_add(&minor_arr[minor], &new_msg->list);
     return i;
 }
 
@@ -90,21 +95,24 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 
 }
-static void relase_list(struct list_head list)
+static void release_list(struct list_head list)
 {
+
     struct list_head *pos,*q;
 
     list_for_each_safe(pos, q, &list){
-        msg entry= list_entry(pos, msg, list);
+        msg * entry= list_entry(pos, msg, list);
         list_del(pos);
         kfree(entry); //might it be free?
     }
 }
-static int device_release(struct inode *, struct file *) {
-    for (short i = 0; i < channel_num; i++)
-    {
+static int device_release(struct inode * inode, struct file * file) {
 
-    }
+     msg *minor_list = minor_list[get_minor(file)];
+    struct list_head list2send = minor_list->list;
+  release_list(list2send);
+            
+
 }
 
 struct file_operations Fops =
