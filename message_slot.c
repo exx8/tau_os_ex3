@@ -23,7 +23,11 @@ static struct msg **channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
     channel_list = kcalloc(sizeof(*channel_list), 256, GFP_KERNEL);
+    unsigned int minor = iminor(file);
+    if (channel_list[minor] == NULL) {
+        channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
 
+    }
 
 }
 
@@ -63,15 +67,12 @@ static long invalid_ioctl() {
 }
 
 static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsigned long channel) {
+    unsigned int minor = iminor(file);
 
     if (ioctl_command_id != MSG_SLOT_CHANNEL || channel == 0) {
         return invalid_ioctl();
     }
-    unsigned int minor = iminor(file);
-    if (channel_list[minor] == NULL) {
-        channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
 
-    }
 
     file->private_data->channel_id = minor;
 
