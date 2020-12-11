@@ -31,8 +31,7 @@ static int device_open(struct inode *inode, struct file *file) {
 
 }
 
-static ssize_t device_read(struct file *file, char __user *buffer, size_t length, loff_t *offset) {
-    unsigned int minor = file->private_data->channel_id;
+static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
     struct list_head *pos;
     msg * msg_list = (channel_list[minor]);
 
@@ -40,11 +39,19 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 
         msg * entry = list_entry((pos), msg, list);
         if (entry->minor == minor) {
-            for (short i = 0; i < entry->len; i++)
-                put_user(&entry->msg[i], &buffer[i]);
+            return entry;
+
 
         }
     }
+    return NULL;
+}
+
+static ssize_t device_read(struct file *file, char __user *buffer, size_t length, loff_t *offset) {
+    unsigned int minor = file->private_data->channel_id;
+    msg *entry = get_entry_by_minor(buffer, minor);
+    for (short i = 0; i < entry->len; i++)
+        put_user(&entry->msg[i], &buffer[i]);
 }
 
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
