@@ -5,6 +5,7 @@
 #include <linux/fs.h>       /* for register_chrdev */
 #include <linux/string.h>
 #include <errno.h>
+#include <malloc.h>
 #include "sys/types.h"
 #include "linux/list.h"
 #include "linux/slab.h"
@@ -54,7 +55,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     msg *entry = get_entry_by_minor(buffer, minor);
     for (short i = 0; i < entry->len; i++)
         put_user(&entry->msg[i], &buffer[i]);
-    free(entry);
+    kfree(entry); //might it be free?
 }
 
 //invariant: old versions always come after the most updated
@@ -89,9 +90,21 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 
 }
+static void relase_list(struct list_head list)
+{
+    struct list_head *pos,*q;
 
+    list_for_each_safe(pos, q, &list){
+        msg entry= list_entry(pos, msg, list);
+        list_del(pos);
+        kfree(entry); //might it be free?
+    }
+}
 static int device_release(struct inode *, struct file *) {
+    for (short i = 0; i < channel_num; i++)
+    {
 
+    }
 }
 
 struct file_operations Fops =
