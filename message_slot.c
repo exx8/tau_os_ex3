@@ -62,6 +62,8 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
         return -EINVAL;
     unsigned int minor = file->private_data->channel_id;
     msg *entry = get_entry_by_minor(buffer, minor);
+    if (entry == NULL)
+        return -EWOULDBLOCK;
     for (short i = 0; i < entry->len; i++)
         put_user(&entry->msg_value[i], &buffer[i]);
     kfree(entry); //might it be free?
