@@ -39,13 +39,15 @@ static int device_open(struct inode *inode, struct file *file) {
 
 }
 
+static bool no_channel(const struct file *file) { return file->private_data == NULL; }
+
 static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
     struct list_head *pos;
-    msg * msg_list = (minor_arr[minor]);
+    msg *msg_list = (minor_arr[minor]);
 
     list_for_each(pos, &msg_list->list) {
 
-        msg * entry = list_entry((pos), msg, list);
+        msg *entry = list_entry((pos), msg, list);
         if (entry->minor == minor) {
             return entry;
 
@@ -63,9 +65,12 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     kfree(entry); //might it be free?
 }
 
+
 //invariant: old versions always come after the most updated
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
     int i;
+    if (no_channel(file))
+        return -EINVAL;
     if (buffer == NULL)
         return -EINVAL;
     const int minor = file->private_data->channel_id;
@@ -95,23 +100,24 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 
 }
-static void release_list(struct list_head list)
-{
 
-    struct list_head *pos,*q;
+static void release_list(struct list_head list) {
 
-    list_for_each_safe(pos, q, &list){
-        msg * entry= list_entry(pos, msg, list);
+    struct list_head *pos, *q;
+
+    list_for_each_safe(pos, q, &list) {
+        msg *entry = list_entry(pos, msg, list);
         list_del(pos);
         kfree(entry); //might it be free?
     }
 }
-static int device_release(struct inode * inode, struct file * file) {
 
-     msg *minor_list = &minor_list[get_minor(file)];
+static int device_release(struct inode *inode, struct file *file) {
+
+    msg *minor_list = &minor_list[get_minor(file)];
     struct list_head list2send = minor_list->list;
-  release_list(list2send);
-            
+    release_list(list2send);
+
 
 }
 
