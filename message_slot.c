@@ -108,7 +108,7 @@ static void release_list(struct list_head list)
 }
 static int device_release(struct inode * inode, struct file * file) {
 
-     msg *minor_list = minor_list[get_minor(file)];
+     msg *minor_list = &minor_list[get_minor(file)];
     struct list_head list2send = minor_list->list;
   release_list(list2send);
             
