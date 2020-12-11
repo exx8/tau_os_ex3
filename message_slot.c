@@ -10,6 +10,8 @@
 #include "linux/slab.h"
 #include "linux/uaccess.h"
 
+#define channel_num 256
+
 #define msg_len 128
 typedef struct {
     struct list_head list;
@@ -22,7 +24,7 @@ typedef struct {
 static struct msg **channel_list;
 
 static int device_open(struct inode *inode, struct file *file) {
-    channel_list = kcalloc(sizeof(*channel_list), 256, GFP_KERNEL);
+    channel_list = kcalloc(sizeof(*channel_list), channel_num, GFP_KERNEL);
     unsigned int minor = iminor(file);
     if (channel_list[minor] == NULL) {
         channel_list[minor] = kcalloc(sizeof(channel_list), 1, GFP_KERNEL);
@@ -52,7 +54,9 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     msg *entry = get_entry_by_minor(buffer, minor);
     for (short i = 0; i < entry->len; i++)
         put_user(&entry->msg[i], &buffer[i]);
+    free(entry);
 }
+
 //invariant: old versions always come after the most updated
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
     int i;
