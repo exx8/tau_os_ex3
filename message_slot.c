@@ -64,6 +64,8 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     msg *entry = get_entry_by_minor(buffer, minor);
     if (entry == NULL)
         return -EWOULDBLOCK;
+    if (entry->len > length)
+        return -ENOSPC;
     for (short i = 0; i < entry->len; i++)
         put_user(&entry->msg_value[i], &buffer[i]);
     kfree(entry); //might it be free?
