@@ -15,6 +15,7 @@ typedef struct {
     struct list_head list;
     char msg[msg_len];
     short len;
+    unsigned int minor;
 
 } msg;
 
@@ -30,11 +31,16 @@ static int device_open(struct inode *inode, struct file *file) {
 static ssize_t device_read(struct file *file, char __user *buffer, size_t length, loff_t *offset) {
     unsigned int minor = iminor(file);
     struct list_head *pos;
-      msg * msg_list=(channel_list[minor]);
+    msg * msg_list = (channel_list[minor]);
 
-    list_for_each(pos,&msg_list->list)
-    {
+    list_for_each(pos, &msg_list->list) {
 
+        msg * entry = list_entry((pos), msg, list);
+        if (entry->minor == minor) {
+            for (short i = 0; i < entry->len; i++)
+                put_user(&entry->msg[i], &buffer[i]);
+
+        }
     }
 }
 
