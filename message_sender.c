@@ -51,5 +51,6 @@ int main(int argc, char *argv[]) {
 
     int close_status = close(file_status);
     error_handler(close_status);
+
     return 0;
 }
