@@ -11,9 +11,7 @@
 #include "linux/slab.h"
 #include "linux/uaccess.h"
 
-#define channel_num 256
 
-#define msg_len 128
 typedef struct {
     struct list_head list;
     char msg_value[msg_len];
@@ -104,7 +102,7 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
     file->private_data->channel_id = minor;
 
-
+    return OK;
 }
 
 static void release_list(struct list_head list) {
