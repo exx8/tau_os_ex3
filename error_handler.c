@@ -18,3 +18,8 @@ void error_handler(int status) {
     }
 
 }
+
+void print_error(char *str) {
+    fprintf(stderr, "%s \n", str);
+    exit(1);
+}

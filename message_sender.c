@@ -14,24 +14,35 @@ void validate_num_of_argc(int argc) {
     }
 }
 
+int open_file_for_sender(char *const *argv) {
+    int file_status = open(argv[1], O_WRONLY);
+    error_handler(file_status);
+    return file_status;
+}
+
+int get_channel_id(char *const *argv) {
+   int channel_id = atoi(argv[2]);
+    error_handler(channel_id);
+    return channel_id;
+}
+
+void ioctl_call(int ioctl_status, int channel_id, int file_status) {
+    ioctl_status = ioctl(file_status, MSG_SLOT_CHANNEL, channel_id);
+    error_handler(ioctl_status);
+}
+
 int main(int argc, char *argv[]) {
 
     int ioctl_status;
-    unsigned long channel_id;
-    long length;
+    int channel_id;
 
     validate_num_of_argc(argc);
 
-    int file_status = open(argv[1], O_WRONLY);
+    int file_status = open_file_for_sender(argv);
+    channel_id = get_channel_id(argv);
+    ioctl_call(ioctl_status, channel_id, file_status);
 
-
-    channel_id = atoi(argv[2]);
-    ioctl_status = ioctl(file_status, MSG_SLOT_CHANNEL, channel_id);
-    if (ioctl_status != OK) {
-        perror("ioctl");
-        exit(1);
-    }
-
+    size_t length;
     length = strlen(argv[3]);
     ioctl_status = write(file_status, argv[3], length);
     if (ioctl_status != length) {
