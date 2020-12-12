@@ -7,7 +7,6 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include "error_handler.h"
 
 
 void check_num_of_args(int argc) {
