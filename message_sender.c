@@ -21,7 +21,7 @@ int open_file_for_sender(char *const *argv) {
 }
 
 int get_channel_id(char *const *argv) {
-   int channel_id = atoi(argv[2]);
+    int channel_id = atoi(argv[2]);
     error_handler(channel_id);
     return channel_id;
 }
@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
     size_t length;
     length = strlen(argv[3]);
     ioctl_status = write(file_status, argv[3], length);
-    if (ioctl_status != length) {
-        perror("write");
-        exit(1);
-    }
+    if (ioctl_status != length)
+        print_error("something went wrong with write");
 
-    close(file_status);
+
+    int close_status = close(file_status);
+    error_handler(close_status);
     return 0;
 }
