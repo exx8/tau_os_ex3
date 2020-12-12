@@ -3,17 +3,11 @@
 #include <errno.h>
 #include <stdlib.h>
 #include "message_slot.h"
+#include "error_handler.h"
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-
-void error_handler(int status) {
-    if (status < 0) {
-        fprintf(stderr, "%s \n", strerror(errno));
-        exit(1);
-    }
-
-}
+#include "error_handler.h"
 
 
 void check_num_of_args(int argc) {
