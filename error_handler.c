@@ -10,7 +10,6 @@
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
-#include "error_handler.h"
 
 void error_handler(int status) {
     if (status < 0) {
