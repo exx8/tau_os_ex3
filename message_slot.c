@@ -4,11 +4,10 @@
 #include <linux/module.h>   /* Specifically, a module */
 #include <linux/fs.h>       /* for register_chrdev */
 #include <linux/string.h>
-#include "sys/types.h"
 #include "linux/list.h"
 #include "linux/slab.h"
 #include "linux/uaccess.h"
-
+#include <linux/spinlock.h>
 
 typedef struct {
     struct list_head list;
