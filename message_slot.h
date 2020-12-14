@@ -16,4 +16,4 @@
 #define DEVICE_RANGE_NAME "char_dev"
 #define BUF_LEN 80
 #define DEVICE_FILE_NAME "simple_char_dev"
-#define major 240
+#define MAJOR_NUM 240

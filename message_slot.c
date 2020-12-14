@@ -63,7 +63,9 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
         return -ENOSPC;
     for (short i = 0; i < entry->len; i++)
         put_user(&entry->msg_value[i], &buffer[i]);
+    short returned=entry->len;
     kfree(entry); //might it be free?
+    return returned;
 }
 
 
@@ -136,9 +138,9 @@ struct file_operations Fops =
 static int __init simple_init(void)
 {
 
-
+int major;
     // Register driver capabilities. Obtain major num
-    major = register_chrdev( 0, DEVICE_RANGE_NAME, &Fops );
+    major = register_chrdev( MAJOR_NUM, DEVICE_RANGE_NAME, &Fops );
 
     // Negative values signify an error
     if( major < 0 )
@@ -163,7 +165,7 @@ static void __exit simple_cleanup(void)
 {
     // Unregister the device
     // Should always succeed
-    unregister_chrdev(major, DEVICE_RANGE_NAME);
+    unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
 }
 
 module_init(simple_init);
