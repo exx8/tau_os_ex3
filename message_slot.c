@@ -4,8 +4,6 @@
 #include <linux/module.h>   /* Specifically, a module */
 #include <linux/fs.h>       /* for register_chrdev */
 #include <linux/string.h>
-#include <errno.h>
-#include <malloc.h>
 #include "sys/types.h"
 #include "linux/list.h"
 #include "linux/slab.h"
