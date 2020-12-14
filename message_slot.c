@@ -136,3 +136,38 @@ struct file_operations Fops =
 
         };
 
+static int __init simple_init(void)
+{
+
+
+    // Register driver capabilities. Obtain major num
+    major = register_chrdev( 0, DEVICE_RANGE_NAME, &Fops );
+
+    // Negative values signify an error
+    if( major < 0 )
+    {
+        printk( KERN_ALERT "%s registraion failed for  %d\n",
+                DEVICE_FILE_NAME, major );
+        return major;
+    }
+
+    printk( "Registeration is successful. "
+            "The major device number is %d.\n", major );
+    printk( "If you want to talk to the device driver,\n" );
+    printk( "you have to create a device file:\n" );
+    printk( "mknod /dev/%s c %d 0\n", DEVICE_FILE_NAME, major );
+    printk( "You can echo/cat to/from the device file.\n" );
+    printk( "Dont forget to rm the device file and "
+            "rmmod when you're done\n" );
+
+    return 0;
+}
+static void __exit simple_cleanup(void)
+{
+    // Unregister the device
+    // Should always succeed
+    unregister_chrdev(major, DEVICE_RANGE_NAME);
+}
+
+module_init(simple_init);
+module_exit(simple_cleanup);
