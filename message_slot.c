@@ -21,7 +21,8 @@ typedef struct {
 } msg;
 
 static msg **minor_arr;
-
+static void debug(char *const fmt) {
+    printk(fmt); }
 static unsigned int get_minor(const struct inode *inode) {
     unsigned int minor = iminor(inode);
     return minor;
@@ -87,14 +88,25 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         return -EINVAL;
     if (buffer == NULL)
         return -EINVAL;
+    debug("device write");
     minor = ((private_data_type*)file->private_data)->channel_id;
+    debug("device write minor");
+
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
+
     new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
+    new_msg->list=
     priv_buffer = kmalloc(sizeof(char), msg_len);
+    debug("device write before for");
+
     for (i = 0; i < msg_len; i++)
         get_user(priv_buffer[i], &buffer[i]);
+    debug("device write before list");
+
     list_add(&minor_arr[minor]->list, &new_msg->list);
+    debug("device write list");
+
     return i;
 }
 
@@ -102,8 +114,7 @@ static long einvalid_ioctl(void) {
     return -EINVAL;
 }
 
-static void debug(char *const fmt) {
-    printk(fmt); }
+
 
 static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsigned long channel) {
     unsigned int channel_id = channel;
