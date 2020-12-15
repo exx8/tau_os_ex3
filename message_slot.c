@@ -97,7 +97,6 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         return -EMSGSIZE;
 
     new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
-    new_msg->list=
     priv_buffer = kmalloc(sizeof(char), msg_len);
     debug("device write before for");
 
