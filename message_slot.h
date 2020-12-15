@@ -10,7 +10,7 @@
 #endif //TAU_OS_EX3_MESSAGE_SLOT_H
 #define major_number 240
 #define MSG_SLOT_CHANNEL 1
-#define OK 1
+#define OK 0
 
 #define SUCCESS 0
 #define DEVICE_RANGE_NAME "char_dev"

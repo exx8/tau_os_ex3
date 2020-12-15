@@ -8,7 +8,10 @@
 #include "linux/slab.h"
 #include "linux/uaccess.h"
 #include <linux/spinlock.h>
-
+MODULE_LICENSE("GPL");
+typedef struct {
+    int channel_id;
+} private_data_type;
 typedef struct {
     struct list_head list;
     char msg_value[msg_len];
@@ -17,21 +20,22 @@ typedef struct {
 
 } msg;
 
-static struct msg **minor_arr;
+static msg **minor_arr;
 
-static unsigned int get_minor(const struct file *file) {
-    unsigned int minor = iminor(file);
+static unsigned int get_minor(const struct inode *inode) {
+    unsigned int minor = iminor(inode);
     return minor;
 }
 
 static int device_open(struct inode *inode, struct file *file) {
+    unsigned int minor;
     minor_arr = kcalloc(sizeof(*minor_arr), channel_num, GFP_KERNEL);
-    unsigned int minor = get_minor(file);
+    minor = get_minor(inode);
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
 
     }
-
+    return OK;
 }
 
 static bool no_channel(const struct file *file) { return file->private_data == NULL; }
@@ -53,17 +57,21 @@ static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
 }
 
 static ssize_t device_read(struct file *file, char __user *buffer, size_t length, loff_t *offset) {
+    unsigned int minor;
+    short i;
+    short returned;
+    msg *entry;
     if (no_channel(file))
         return -EINVAL;
-    unsigned int minor = file->private_data->channel_id;
-    msg *entry = get_entry_by_minor(buffer, minor);
+    minor = ((private_data_type*)file->private_data)->channel_id;
+    entry = get_entry_by_minor(buffer, minor);
     if (entry == NULL)
         return -EWOULDBLOCK;
     if (entry->len > length)
         return -ENOSPC;
-    for (short i = 0; i < entry->len; i++)
-        put_user(&entry->msg_value[i], &buffer[i]);
-    short returned=entry->len;
+    for (i = 0; i < entry->len; i++)
+        put_user(entry->msg_value[i], &buffer[i]);
+    returned = entry->len;
     kfree(entry); //might it be free?
     return returned;
 }
@@ -72,34 +80,37 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 //invariant: old versions always come after the most updated
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
     int i;
+    msg *new_msg;
+    char *priv_buffer;
+     int minor;
     if (no_channel(file))
         return -EINVAL;
     if (buffer == NULL)
         return -EINVAL;
-    const int minor = file->private_data->channel_id;
+    minor = ((private_data_type*)file->private_data)->channel_id;
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
-    msg *new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
-    char *priv_buffer = kmalloc(sizeof(char), msg_len);
+    new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
+    priv_buffer = kmalloc(sizeof(char), msg_len);
     for (i = 0; i < msg_len; i++)
         get_user(priv_buffer[i], &buffer[i]);
-    list_add(&minor_arr[minor], &new_msg->list);
+    list_add(&minor_arr[minor]->list, &new_msg->list);
     return i;
 }
 
-static long invalid_ioctl() {
+static long einvalid_ioctl(void) {
     return -EINVAL;
 }
 
 static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsigned long channel) {
-    unsigned int minor = iminor(file);
+    unsigned int channel_id = channel;
 
     if (ioctl_command_id != MSG_SLOT_CHANNEL || channel == 0) {
-        return invalid_ioctl();
+        return einvalid_ioctl();
     }
 
 
-    file->private_data->channel_id = minor;
+    ((private_data_type*)file->private_data)->channel_id = channel_id;
 
     return OK;
 }
@@ -117,10 +128,10 @@ static void release_list(struct list_head list) {
 
 static int device_release(struct inode *inode, struct file *file) {
 
-    msg *minor_list = &minor_list[get_minor(file)];
-    struct list_head list2send = minor_list->list;
+    msg *minor_list_ele = minor_arr[get_minor(inode)];
+    struct list_head list2send = minor_list_ele->list;
     release_list(list2send);
-
+    return OK;
 
 }
 
@@ -135,38 +146,37 @@ struct file_operations Fops =
 
         };
 
-static int __init simple_init(void)
-{
+static int __init simple_init(void) {
 
-int major;
+    int major;
     // Register driver capabilities. Obtain major num
-    major = register_chrdev( MAJOR_NUM, DEVICE_RANGE_NAME, &Fops );
+    major = register_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME, &Fops);
 
     // Negative values signify an error
-    if( major < 0 )
-    {
-        printk( KERN_ALERT "%s registraion failed for  %d\n",
-                DEVICE_FILE_NAME, major );
+    if (major < 0) {
+        printk(KERN_ALERT "%s registraion failed for  %d\n",
+               DEVICE_FILE_NAME, major);
         return major;
     }
 
-    printk( "Registeration is successful. "
-            "The major device number is %d.\n", major );
-    printk( "If you want to talk to the device driver,\n" );
-    printk( "you have to create a device file:\n" );
-    printk( "mknod /dev/%s c %d 0\n", DEVICE_FILE_NAME, major );
-    printk( "You can echo/cat to/from the device file.\n" );
-    printk( "Dont forget to rm the device file and "
-            "rmmod when you're done\n" );
+    printk("Registeration is successful. "
+           "The major device number is %d.\n", major);
+    printk("If you want to talk to the device driver,\n");
+    printk("you have to create a device file:\n");
+    printk("mknod /dev/%s c %d 0\n", DEVICE_FILE_NAME, major);
+    printk("You can echo/cat to/from the device file.\n");
+    printk("Dont forget to rm the device file and "
+           "rmmod when you're done\n");
 
     return 0;
 }
-static void __exit simple_cleanup(void)
-{
+
+static void __exit simple_cleanup(void) {
     // Unregister the device
     // Should always succeed
     unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
 }
 
 module_init(simple_init);
+
 module_exit(simple_cleanup);
