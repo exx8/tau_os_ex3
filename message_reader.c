@@ -10,7 +10,8 @@
 
 
 void check_num_of_args(int argc) {
-    if (argc != 3) {
+    printf("%d",argc);
+    if (argc != 1) {
         fprintf(stderr, "incorrect number of argument\n");
         exit(1);
     }
@@ -18,7 +19,7 @@ void check_num_of_args(int argc) {
 
 void open_file(char *const *argv, int *status) {
     *status = open(argv[1], O_RDONLY);
-    error_handler(status);
+    error_handler(*status);
 }
 
 void set_channel(char *const *argv, int file_status, unsigned long channel_id) {
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]) {
     int file_status;
     //change from here.
     char buffer[msg_len];
-    unsigned long channel_id;
+    unsigned long channel_id=0;
 
     check_num_of_args(argc);
 

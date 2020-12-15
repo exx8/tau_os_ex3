@@ -15,6 +15,7 @@ void validate_num_of_argc(int argc) {
 }
 
 int open_file_for_sender(char *const *argv) {
+    printf("open");
     int file_status = open(argv[1], O_WRONLY);
     error_handler(file_status);
     return file_status;
@@ -32,24 +33,30 @@ void ioctl_call(int ioctl_status, int channel_id, int file_status) {
 }
 
 int main(int argc, char *argv[]) {
-
-    int ioctl_status;
+    printf("main \n");
+    int ioctl_status=0;
     int channel_id;
-
     validate_num_of_argc(argc);
 
     int file_status = open_file_for_sender(argv);
     channel_id = get_channel_id(argv);
+
+    printf("ioctl \n");
     ioctl_call(ioctl_status, channel_id, file_status);
+    printf("after ioctl\n");
 
     size_t length;
     length = strlen(argv[3]);
+    printf("length\n");
     ioctl_status = write(file_status, argv[3], length);
+    printf("%d \n",ioctl_status);
     if (ioctl_status != length)
         print_error("something went wrong with write");
 
 
     int close_status = close(file_status);
+    printf("close \n");
+
     error_handler(close_status);
 
     return 0;

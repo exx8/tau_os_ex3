@@ -102,15 +102,18 @@ static long einvalid_ioctl(void) {
     return -EINVAL;
 }
 
+static void debug(char *const fmt) {
+    printk(fmt); }
+
 static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsigned long channel) {
     unsigned int channel_id = channel;
-
+    debug("iocntrl\n");
     if (ioctl_command_id != MSG_SLOT_CHANNEL || channel == 0) {
         return einvalid_ioctl();
     }
 
-
-    ((private_data_type*)file->private_data)->channel_id = channel_id;
+    file->private_data=kcalloc(sizeof(private_data_type),1,GFP_KERNEL);
+    ((private_data_type*)file->private_data)->channel_id = channel_id; //wasn't init
 
     return OK;
 }
