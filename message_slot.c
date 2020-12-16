@@ -43,6 +43,7 @@ static int device_open(struct inode *inode, struct file *file) {
     private_data->minor=minor;
     private_data->channel_id=0;
     file->private_data=private_data;
+    printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
 
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
@@ -98,6 +99,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     char *priv_buffer;
     int minor;
     int channel_id;
+    minor = ((private_data_type*)file->private_data)->minor;
+    printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
     if (no_channel(file))
         return -EINVAL;
     if (buffer == NULL)
@@ -179,14 +182,16 @@ struct file_operations Fops =
 static int __init simple_init(void) {
 
     int major;
+    int status;
     // Register driver capabilities. Obtain major num
-    major = register_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME, &Fops);
-
+    printk("%d",MAJOR_NUM);
+    status=register_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME, &Fops);
+    major=MAJOR_NUM;
     // Negative values signify an error
-    if (major < 0) {
+    if (status < 0) {
         printk(KERN_ALERT "%s registraion failed for  %d\n",
                DEVICE_FILE_NAME, major);
-        return major;
+        return status;
     }
 
     printk("Registeration is successful. "
