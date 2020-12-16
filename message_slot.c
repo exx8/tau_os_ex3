@@ -117,8 +117,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     INIT_LIST_HEAD(&new_msg->list);
     priv_buffer = kmalloc(sizeof(char), msg_len);
     debug("device write before for");
-
-    for (i = 0; i < msg_len; i++)
+    printk("%zu",length);
+    for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
     debug("device write before list");
     debug_pointer(minor_arr[minor]);
