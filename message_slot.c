@@ -11,12 +11,13 @@
 MODULE_LICENSE("GPL");
 typedef struct {
     int channel_id;
+    int minor;
 } private_data_type;
 typedef struct {
     struct list_head list;
     char msg_value[msg_len];
     short len;
-    unsigned int minor;
+    unsigned int channel_id;
 
 } msg;
 
@@ -35,9 +36,14 @@ static unsigned int get_minor(const struct inode *inode) {
 
 static int device_open(struct inode *inode, struct file *file) {
     unsigned int minor;
+    private_data_type  * private_data=kcalloc(sizeof(private_data),1,GFP_KERNEL);
     minor_arr = kcalloc(sizeof(*minor_arr), channel_num, GFP_KERNEL);
     minor = get_minor(inode);
     printk("open minor %d \n",minor);
+    private_data->minor=minor;
+    private_data->channel_id=0;
+    file->private_data=private_data;
+
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
 
@@ -47,14 +53,14 @@ static int device_open(struct inode *inode, struct file *file) {
 
 static bool no_channel(const struct file *file) { return file->private_data == NULL; }
 
-static msg *get_entry_by_minor(const char *buffer, unsigned int minor) {
+static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id) {
     struct list_head *pos;
-    msg *msg_list = (minor_arr[minor]);
+    msg *msg_list = (minor_arr[channel_id]);
 
     list_for_each(pos, &msg_list->list) {
 
         msg *entry = list_entry((pos), msg, list);
-        if (entry->minor == minor) {
+        if (entry->channel_id == channel_id) {
             return entry;
 
 
@@ -68,10 +74,11 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     short i;
     short returned;
     msg *entry;
+    int channel_id;
     if (no_channel(file))
         return -EINVAL;
-    minor = ((private_data_type*)file->private_data)->channel_id;
-    entry = get_entry_by_minor(buffer, minor);
+    channel_id = ((private_data_type*)file->private_data)->channel_id;
+    entry = get_entry_by_channel_id(buffer, minor);
     if (entry == NULL)
         return -EWOULDBLOCK;
     if (entry->len > length)
@@ -90,18 +97,20 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     msg *new_msg;
     char *priv_buffer;
     int minor;
+    int channel_id;
     if (no_channel(file))
         return -EINVAL;
     if (buffer == NULL)
         return -EINVAL;
     debug("device write");
-    minor = ((private_data_type*)file->private_data)->channel_id;
+    channel_id = ((private_data_type*)file->private_data)->channel_id; // a problem
     debug("device write minor");
 
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
 
     new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
+    new_msg->channel_id=channel_id;
     priv_buffer = kmalloc(sizeof(char), msg_len);
     debug("device write before for");
 
