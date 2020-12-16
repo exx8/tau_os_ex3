@@ -11,7 +11,7 @@
 
 void check_num_of_args(int argc) {
     printf("%d",argc);
-    if (argc != 1) {
+    if (argc != 3) {
         fprintf(stderr, "incorrect number of argument\n");
         exit(1);
     }

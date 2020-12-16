@@ -54,9 +54,9 @@ static int device_open(struct inode *inode, struct file *file) {
 
 static bool no_channel(const struct file *file) { return file->private_data == NULL; }
 
-static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id) {
+static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     struct list_head *pos;
-    msg *msg_list = (minor_arr[channel_id]);
+    msg *msg_list = (minor_arr[minor]);
 
     list_for_each(pos, &msg_list->list) {
 
@@ -78,12 +78,15 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     int channel_id;
     if (no_channel(file))
         return -EINVAL;
+    debug("before reading channel_id");
     channel_id = ((private_data_type*)file->private_data)->channel_id;
-    entry = get_entry_by_channel_id(buffer, minor);
+    minor=((private_data_type*)file->private_data)->minor;
+    entry = get_entry_by_channel_id(buffer, channel_id,minor);
     if (entry == NULL)
         return -EWOULDBLOCK;
     if (entry->len > length)
         return -ENOSPC;
+    debug("before for of msg read");
     for (i = 0; i < entry->len; i++)
         put_user(entry->msg_value[i], &buffer[i]);
     returned = entry->len;
@@ -157,16 +160,18 @@ static void release_list(struct list_head list) {
     list_for_each_safe(pos, q, &list) {
         msg *entry = list_entry(pos, msg, list);
         list_del(pos);
+        debug_pointer(pos);
         kfree(entry); //might it be free?
     }
 }
 
 static int device_release(struct inode *inode, struct file *file) {
-
     msg *minor_list_ele = minor_arr[get_minor(inode)];
     struct list_head list2send = minor_list_ele->list;
-    release_list(list2send);
     return OK;
+
+    debug("free them all");
+    release_list(list2send);
 
 }
 

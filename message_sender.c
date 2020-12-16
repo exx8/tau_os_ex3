@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     if (ioctl_status != length)
         print_error("something went wrong with write");
 
-    int close_status =  close(file_status);
+    int close_status = close(file_status);
     printf("close \n");
 
     error_handler(close_status);
