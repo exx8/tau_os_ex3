@@ -23,6 +23,10 @@ typedef struct {
 static msg **minor_arr;
 static void debug(char *const fmt) {
     printk(fmt); }
+    static void debug_pointer(void * pointer)
+    {
+    printk("%p",pointer);
+    }
 
 static unsigned int get_minor(const struct inode *inode) {
     unsigned int minor = iminor(inode);
@@ -33,6 +37,7 @@ static int device_open(struct inode *inode, struct file *file) {
     unsigned int minor;
     minor_arr = kcalloc(sizeof(*minor_arr), channel_num, GFP_KERNEL);
     minor = get_minor(inode);
+    printk("open minor %d \n",minor);
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
 
@@ -103,7 +108,9 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < msg_len; i++)
         get_user(priv_buffer[i], &buffer[i]);
     debug("device write before list");
-
+    debug_pointer(minor_arr[minor]);
+    debug_pointer(&minor_arr[minor]->list);
+    printk("check for minor %d",minor);
     list_add(&minor_arr[minor]->list, &new_msg->list);
     debug("device write list");
 
