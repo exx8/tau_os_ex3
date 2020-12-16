@@ -114,6 +114,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
 
     new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
     new_msg->channel_id=channel_id;
+    INIT_LIST_HEAD(&new_msg->list);
     priv_buffer = kmalloc(sizeof(char), msg_len);
     debug("device write before for");
 
@@ -123,6 +124,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     debug_pointer(minor_arr[minor]);
     debug_pointer(&minor_arr[minor]->list);
     printk("check for minor %d",minor);
+    debug_pointer(new_msg);
+    debug_pointer(&new_msg->list); //check list its init probably wrong.
     list_add(&minor_arr[minor]->list, &new_msg->list);
     debug("device write list");
 
