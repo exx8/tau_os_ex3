@@ -11,7 +11,7 @@
 MODULE_LICENSE("GPL");
 typedef struct {
     int channel_id;
-    int minor;
+    unsigned int minor;
 } private_data_type;
 typedef struct {
     struct list_head list;
@@ -142,7 +142,6 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
         return einvalid_ioctl();
     }
 
-    file->private_data=kcalloc(sizeof(private_data_type),1,GFP_KERNEL);
     ((private_data_type*)file->private_data)->channel_id = channel_id; //wasn't init
 
     return OK;
