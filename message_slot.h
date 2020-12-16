@@ -17,3 +17,4 @@
 #define BUF_LEN 80
 #define DEVICE_FILE_NAME "simple_char_dev"
 #define MAJOR_NUM 240
+#define NO_CHANNEL -1

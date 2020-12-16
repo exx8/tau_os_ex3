@@ -17,12 +17,13 @@ typedef struct {
     struct list_head list;
     char msg_value[msg_len];
     short len;
-    unsigned int channel_id;
+     int channel_id;
 
 } msg;
 
-static msg **minor_arr;
+static struct list_head  **minor_arr;
 static void debug(char *const fmt) {
+    printk(KERN_ERR);
     printk(fmt); }
     static void debug_pointer(void * pointer)
     {
@@ -41,24 +42,28 @@ static int device_open(struct inode *inode, struct file *file) {
     minor = get_minor(inode);
     printk("open minor %d \n",minor);
     private_data->minor=minor;
-    private_data->channel_id=0;
+    private_data->channel_id=NO_CHANNEL;
     file->private_data=private_data;
     printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
 
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(minor_arr), 1, GFP_KERNEL);
+        INIT_LIST_HEAD(minor_arr[minor]);
 
     }
     return OK;
 }
 
-static bool no_channel(const struct file *file) { return file->private_data == NULL; }
+static bool no_channel(const struct file *file) {
+    debug("in no channel");
+    debug_pointer(file->private_data);
+
+    return ((private_data_type*)file->private_data)->channel_id==NO_CHANNEL; }
 
 static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     struct list_head *pos;
-    msg *msg_list = (minor_arr[minor]);
 
-    list_for_each(pos, &msg_list->list) {
+    list_for_each(pos, minor_arr[minor]) {
 
         msg *entry = list_entry((pos), msg, list);
         if (entry->channel_id == channel_id) {
@@ -76,8 +81,12 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     short returned;
     msg *entry;
     int channel_id;
-    if (no_channel(file))
+    debug("before no channel");
+    if (no_channel(file)){
+        debug("found no channel");
+
         return -EINVAL;
+        }
     debug("before reading channel_id");
     channel_id = ((private_data_type*)file->private_data)->channel_id;
     minor=((private_data_type*)file->private_data)->minor;
@@ -90,6 +99,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     for (i = 0; i < entry->len; i++)
         put_user(entry->msg_value[i], &buffer[i]);
     returned = entry->len;
+    debug("before kfree device read");
     kfree(entry); //might it be free?
     return returned;
 }
@@ -125,11 +135,11 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         get_user(priv_buffer[i], &buffer[i]);
     debug("device write before list");
     debug_pointer(minor_arr[minor]);
-    debug_pointer(&minor_arr[minor]->list);
+    debug_pointer(&minor_arr[minor]);
     printk("check for minor %d",minor);
     debug_pointer(new_msg);
     debug_pointer(&new_msg->list); //check list its init probably wrong.
-    list_add(&minor_arr[minor]->list, &new_msg->list);
+    list_add(minor_arr[minor], &new_msg->list);
     debug("device write list");
 
     return i;
@@ -166,12 +176,11 @@ static void release_list(struct list_head list) {
 }
 
 static int device_release(struct inode *inode, struct file *file) {
-    msg *minor_list_ele = minor_arr[get_minor(inode)];
-    struct list_head list2send = minor_list_ele->list;
+    struct list_head *minor_list_ele = minor_arr[get_minor(inode)];
     return OK;
 
     debug("free them all");
-    release_list(list2send);
+    release_list(*minor_list_ele);
 
 }
 

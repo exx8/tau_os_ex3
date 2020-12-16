@@ -57,11 +57,11 @@ int main(int argc, char *argv[]) {
     check_num_of_args(argc);
 
     open_file(argv, &file_status);
-
+    printf("after file opening\n");
     set_channel(argv, file_status, channel_id);
-
+    printf("after set channel \n");
     int read_status = read_msg(file_status, buffer);
-
+    printf("read succesfully\n");
     write2console(buffer, read_status);
 
     close_file(file_status);
