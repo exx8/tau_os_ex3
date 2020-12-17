@@ -84,6 +84,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     short returned;
     msg *entry;
     int channel_id;
+
     debug("before no channel read");
     if (no_channel(file)){
         debug("found no channel");
@@ -142,7 +143,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
     list_add(minor_arr[minor], &new_msg->list);
-    printk("A:channel id in new_msg list should be %u and it's %u",channel_id,list_entry(minor_arr[minor], msg, list)->channel_id);
+    printk("B:channel id in new_msg list should be %d and it's %d",channel_id,list_first_entry(minor_arr[minor], msg, list)->channel_id);
     return i;
 }
 
