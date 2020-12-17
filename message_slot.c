@@ -61,10 +61,13 @@ static bool no_channel(const struct file *file) {
 
 static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     struct list_head *pos;
-
+    printk("minor is %d",minor);
+    debug_pointer(list_entry((minor_arr[minor]), msg, list));
     list_for_each(pos, minor_arr[minor]) {
-
         msg *entry = list_entry((pos), msg, list);
+        printk("yo");
+
+        printk("%d",entry->channel_id);
         if (entry->channel_id == channel_id) {
             return entry;
 
@@ -89,8 +92,13 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     channel_id = ((private_data_type*)file->private_data)->channel_id;
     minor=((private_data_type*)file->private_data)->minor;
     entry = get_entry_by_channel_id(buffer, channel_id,minor);
-    if (entry == NULL)
-        return -EWOULDBLOCK;
+    debug_pointer(entry);
+
+    if (entry == NULL) {
+        debug("in EWOULDBLOCK");
+        return -EWOULDBLOCK; //resource temproray unavailable
+    }
+
     if (entry->len > length)
         return -ENOSPC;
     debug("before for of msg read");
