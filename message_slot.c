@@ -19,33 +19,27 @@ typedef struct {
     unsigned int channel_id;
 
 } msg;
-typedef struct
-{
-    int len;
-    msg * array_of_msg;
-} array_list;
-static  array_list **minor_arr;
+
+static int size_of_lists[channel_num];
+static  msg **minor_arr;
 static void debug(char *const fmt) {
     printk(KERN_ERR "%s", fmt); }
     static void debug_pointer(void * pointer)
     {
     printk(KERN_ERR "%p",pointer);
     }
-int  add2list(array_list ** local_minor_arr, int minor, msg  new_msg)
+int  add2list( int minor, msg  new_msg)
 {
     void *newPlace;
-    local_minor_arr[minor]->len++;
-    printk(" new length %d,total size %ld",local_minor_arr[minor]->len,local_minor_arr[minor]->len*sizeof(msg ** ));
-    debug_pointer(local_minor_arr[minor]->array_of_msg);
-    newPlace= krealloc(local_minor_arr[minor]->array_of_msg, local_minor_arr[minor]->len*sizeof(msg **), GFP_KERNEL);
+    size_of_lists[minor]++;
+    newPlace= krealloc(minor_arr, size_of_lists[minor]*sizeof(msg **), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
         return 0;
 
-    minor_arr[minor]->array_of_msg= newPlace;
-    debug(minor_arr[minor]->array_of_msg[0].msg_value);
-    memcpy(&(minor_arr[minor]->array_of_msg[local_minor_arr[minor]->len-1]),&new_msg,sizeof(new_msg));
-    //debug(minor_arr[minor]->array_of_msg[list->len-1].msg_value);
+    minor_arr[minor]= newPlace;
+
+    memcpy(&(minor_arr[minor][size_of_lists[minor]-1]),&new_msg,sizeof(new_msg));
     return 1;
 
 }
@@ -65,12 +59,7 @@ static int device_open(struct inode *inode, struct file *file) {
     private_data->channel_id=NO_CHANNEL;
     file->private_data=private_data;
 
-    if (minor_arr[minor] == NULL) {
-        minor_arr[minor] = kcalloc(sizeof(array_list), 1, GFP_KERNEL); //WRONG?
 
-        
-
-    }
     return OK;
 }
 
@@ -81,27 +70,22 @@ static bool no_channel(const struct file *file) {
 
 static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     int i=0;
-    array_list * current_list;
-    current_list=minor_arr[minor];
-
-    debug("before list entry");
-    printk(" get entry minor %d",minor);
-    printk("len reported by get_entry: %d",current_list->len);
-
-    for(i=0;i<current_list->len;i++)
+    printk("%d",size_of_lists[minor]);
+    debug_pointer(minor_arr[minor]);
+    for(i=0;i<size_of_lists[minor];i++)
     {
-    msg entry = current_list->array_of_msg[i];
+    msg entry =( minor_arr[minor])[i];
         printk("pointer number: %d",i);
     printk(KERN_ERR "premortum");
     printk("%d",entry.channel_id);
     if (entry.channel_id == channel_id) {
-            return &current_list->array_of_msg[i];
+            return &minor_arr[minor][i];
 
 
         }
     }
     printk(KERN_ERR "postmortum");
-    debug_pointer(current_list);
+    debug_pointer(size_of_lists);//to eliminate warnings
     return NULL;
 }
 
@@ -166,7 +150,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     printk("%zu",length);
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
-    status=add2list(minor_arr,minor,new_msg);
+    status=add2list(minor,new_msg);
     printk("viewed length is :%d,status is :%d",minor_arr[minor]->len,status);
     return i;
 }
