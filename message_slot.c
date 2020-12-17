@@ -78,7 +78,7 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
         printk("pointer number: %d",i);
     printk(KERN_ERR "premortum");
     printk("%d",entry.channel_id);
-    if (entry.channel_id == channel_id) {
+    if (entry.channel_id == channel_id) { //@todo check why for the first it always fails
             return &minor_arr[minor][i];
 
 
