@@ -17,17 +17,16 @@ typedef struct {
     struct list_head list;
     char msg_value[msg_len];
     short len;
-     int channel_id;
+    unsigned int channel_id;
 
 } msg;
 
 static struct list_head  **minor_arr;
 static void debug(char *const fmt) {
-    printk(KERN_ERR);
-    printk(fmt); }
+    printk(KERN_ERR "%s", fmt); }
     static void debug_pointer(void * pointer)
     {
-    printk("%p",pointer);
+    printk(KERN_ERR "%p",pointer);
     }
 
 static unsigned int get_minor(const struct inode *inode) {
@@ -61,8 +60,10 @@ static bool no_channel(const struct file *file) {
 
 static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     struct list_head *pos;
-    printk("minor is %d",minor);
-    debug_pointer(list_entry((minor_arr[minor]), msg, list));
+
+
+    debug("before list entry");
+
     list_for_each(pos, minor_arr[minor]) {
         msg *entry = list_entry((pos), msg, list);
         printk("yo");
@@ -125,29 +126,23 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     if (buffer == NULL)
         return -EINVAL;
     debug("device write");
-    channel_id = ((private_data_type*)file->private_data)->channel_id; // a problem
+    channel_id = ((private_data_type*)file->private_data)->channel_id;
     debug("device write minor");
 
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
 
-    new_msg = kcalloc(sizeof(new_msg), 1, GFP_KERNEL);
-    new_msg->channel_id=channel_id;
+    new_msg = kcalloc(sizeof(msg), 1, GFP_KERNEL);
     INIT_LIST_HEAD(&new_msg->list);
-    priv_buffer = kmalloc(sizeof(char), msg_len);
+    new_msg->channel_id=channel_id;//something is wrong here, can't set right channel_id
+
+    priv_buffer = new_msg->msg_value;
     debug("device write before for");
     printk("%zu",length);
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
-    debug("device write before list");
-    debug_pointer(minor_arr[minor]);
-    debug_pointer(&minor_arr[minor]);
-    printk("check for minor %d",minor);
-    debug_pointer(new_msg);
-    debug_pointer(&new_msg->list); //check list its init probably wrong.
     list_add(minor_arr[minor], &new_msg->list);
-    debug("device write list");
-
+    printk("A:channel id in new_msg list should be %u and it's %u",channel_id,list_entry(minor_arr[minor], msg, list)->channel_id);
     return i;
 }
 
