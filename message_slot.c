@@ -44,7 +44,8 @@ int  add2list(array_list ** local_minor_arr, int minor, msg  new_msg)
 
     minor_arr[minor]->array_of_msg= newPlace;
     printk("%d",list->len-1);
-    minor_arr[minor]->array_of_msg[list->len-1]=new_msg;
+    memcpy(&(minor_arr[minor]->array_of_msg[list->len-1]),&new_msg,sizeof(new_msg));
+    //debug(minor_arr[minor]->array_of_msg[list->len-1].msg_value);
     return 1;
 
 }
