@@ -37,7 +37,6 @@ int  add2list(array_list ** local_minor_arr, int minor, msg  new_msg)
     array_list *  list=local_minor_arr[minor];
     list->len++;
     printk(" new length %d,total size %ld",list->len,list->len*sizeof(msg ** ));
-    debug_pointer(list->array_of_msg);
     newPlace= krealloc(local_minor_arr[minor]->array_of_msg, list->len*sizeof(msg **), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
@@ -64,7 +63,6 @@ static int device_open(struct inode *inode, struct file *file) {
     private_data->minor=minor;
     private_data->channel_id=NO_CHANNEL;
     file->private_data=private_data;
-    printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
 
     if (minor_arr[minor] == NULL) {
         minor_arr[minor] = kcalloc(sizeof(array_list), 1, GFP_KERNEL); //WRONG?
@@ -88,13 +86,11 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
     debug("before list entry");
     printk(" get entry minor %d",minor);
     printk("len reported by get_entry: %d",current_list->len);
-    debug_pointer(current_list->array_of_msg);
 
     for(i=0;i<current_list->len;i++)
     {
     msg entry = current_list->array_of_msg[i];
         printk("pointer number: %d",i);
-    debug_pointer(entry.msg_value);
     printk(KERN_ERR "premortum");
     //there is a problem with entry->channel_id
     if (entry.channel_id == channel_id) {
@@ -125,7 +121,6 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     minor=((private_data_type*)file->private_data)->minor;
     printk("read minor: %d",minor);
     entry = get_entry_by_channel_id(buffer, channel_id,minor);
-    debug_pointer(entry);
 
     if (entry == NULL) {
         debug("in EWOULDBLOCK");
@@ -138,7 +133,6 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     for (i = 0; i < entry->len; i++)
         put_user(entry->msg_value[i], &buffer[i]);
     returned = entry->len;
-    debug("before kfree device read");
     return returned;
 }
 
