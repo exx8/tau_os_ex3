@@ -40,6 +40,9 @@ int  add2list( int minor, msg  new_msg)
     minor_arr[minor]= newPlace;
 
     memcpy(&(minor_arr[minor][size_of_lists[minor]-1]),&new_msg,sizeof(new_msg));
+    minor_arr[minor][size_of_lists[minor]-1].channel_id=new_msg.channel_id;
+
+    minor_arr[minor][size_of_lists[minor]-1].len=new_msg.len;
     return 1;
 
 }
@@ -151,7 +154,6 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
     status=add2list(minor,new_msg);
-    printk("A: %d",new_msg.channel_id);
     printk("viewed length is :%d,status is :%d",size_of_lists[minor],status);
     return i;
 }
