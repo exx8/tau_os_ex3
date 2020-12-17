@@ -56,7 +56,6 @@ static int device_open(struct inode *inode, struct file *file) {
 
 static bool no_channel(const struct file *file) {
     debug("in no channel");
-    debug_pointer(file->private_data);
 
     return ((private_data_type*)file->private_data)->channel_id==NO_CHANNEL; }
 
@@ -81,10 +80,9 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     short returned;
     msg *entry;
     int channel_id;
-    debug("before no channel");
+    debug("before no channel read");
     if (no_channel(file)){
         debug("found no channel");
-
         return -EINVAL;
         }
     debug("before reading channel_id");
