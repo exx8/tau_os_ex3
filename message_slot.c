@@ -179,9 +179,10 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
 
 
 static int device_release(struct inode *inode, struct file *file) {
-    return OK;
-    //todo match for arrays
+    void* private_data=file->private_data;
+    kfree(private_data);
 
+    return OK;
 
 }
 
@@ -226,6 +227,10 @@ static int __init simple_init(void) {
 static void __exit simple_cleanup(void) {
     // Unregister the device
     // Should always succeed
+    int i;
+    for(i=0;i<channel_num;i++)
+        kfree(minor_arr[i]);
+    kfree(minor_arr);
     unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
 }
 
