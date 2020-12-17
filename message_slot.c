@@ -34,17 +34,17 @@ static void debug(char *const fmt) {
 int  add2list(array_list ** local_minor_arr, int minor, msg  new_msg)
 {
     void *newPlace;
-    array_list *  list=local_minor_arr[minor];
-    list->len++;
-    printk(" new length %d,total size %ld",list->len,list->len*sizeof(msg ** ));
-    newPlace= krealloc(local_minor_arr[minor]->array_of_msg, list->len*sizeof(msg **), GFP_KERNEL);
+    local_minor_arr[minor]->len++;
+    printk(" new length %d,total size %ld",local_minor_arr[minor]->len,local_minor_arr[minor]->len*sizeof(msg ** ));
+    debug_pointer(local_minor_arr[minor]->array_of_msg);
+    newPlace= krealloc(local_minor_arr[minor]->array_of_msg, local_minor_arr[minor]->len*sizeof(msg **), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
         return 0;
 
     minor_arr[minor]->array_of_msg= newPlace;
-    printk("%d",list->len-1);
-    memcpy(&(minor_arr[minor]->array_of_msg[list->len-1]),&new_msg,sizeof(new_msg));
+    debug(minor_arr[minor]->array_of_msg[0].msg_value);
+    memcpy(&(minor_arr[minor]->array_of_msg[local_minor_arr[minor]->len-1]),&new_msg,sizeof(new_msg));
     //debug(minor_arr[minor]->array_of_msg[list->len-1].msg_value);
     return 1;
 
