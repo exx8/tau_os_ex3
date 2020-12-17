@@ -22,7 +22,7 @@ typedef struct {
 typedef struct
 {
     int len;
-    msg ** array_of_msg;
+    msg * array_of_msg;
 } array_list;
 static  array_list **minor_arr;
 static void debug(char *const fmt) {
@@ -31,14 +31,14 @@ static void debug(char *const fmt) {
     {
     printk(KERN_ERR "%p",pointer);
     }
-int  add2list(array_list ** local_minor_arr, int minor, msg * new_msg)
+int  add2list(array_list ** local_minor_arr, int minor, msg  new_msg)
 {
     void *newPlace;
     array_list *  list=local_minor_arr[minor];
     list->len++;
     printk(" new length %d,total size %ld",list->len,list->len*sizeof(msg ** ));
     debug_pointer(list->array_of_msg);
-    newPlace= krealloc(&list->array_of_msg, list->len*sizeof(msg **), GFP_KERNEL);
+    newPlace= krealloc(local_minor_arr[minor]->array_of_msg, list->len*sizeof(msg **), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
         return 0;
@@ -92,14 +92,13 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
 
     for(i=0;i<current_list->len;i++)
     {
-    msg *entry = current_list->array_of_msg[i];
+    msg entry = current_list->array_of_msg[i];
         printk("pointer number: %d",i);
-        debug_pointer(entry);
-    debug_pointer(entry->msg_value);
+    debug_pointer(entry.msg_value);
     printk(KERN_ERR "premortum");
-
-    if (entry->channel_id == channel_id) {
-            return entry;
+    //there is a problem with entry->channel_id
+    if (entry.channel_id == channel_id) {
+            return &current_list->array_of_msg[i];
 
 
         }
@@ -140,7 +139,6 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
         put_user(entry->msg_value[i], &buffer[i]);
     returned = entry->len;
     debug("before kfree device read");
-    kfree(entry); //might it be free?
     return returned;
 }
 
@@ -148,8 +146,8 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 //invariant: old versions always come after the most updated
 static ssize_t device_write(struct file *file, const char __user *buffer, size_t length, loff_t *offset) {
     int i;
-    msg *new_msg;
-    char *priv_buffer;
+    msg new_msg;
+    char * priv_buffer;
     int minor;
     int channel_id;
     int status;
@@ -166,10 +164,9 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
 
-    new_msg = kcalloc(sizeof(msg), 1, GFP_KERNEL);
-    new_msg->channel_id=channel_id;//something is wrong here, can't set right channel_id
+    new_msg.channel_id=channel_id;//something is wrong here, can't set right channel_id
 
-    priv_buffer = new_msg->msg_value;
+    priv_buffer = new_msg.msg_value;
     debug("device write before for");
     printk("%zu",length);
     for (i = 0; i < length; i++)
