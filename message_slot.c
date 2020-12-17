@@ -70,14 +70,14 @@ static bool no_channel(const struct file *file) {
 
 static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,unsigned minor) {
     int i=0;
-    printk("%d",size_of_lists[minor]);
+    printk("size as viewed by get_entry_by_channel_id :%d",size_of_lists[minor]);
     debug_pointer(minor_arr[minor]);
     for(i=0;i<size_of_lists[minor];i++)
     {
     msg entry =( minor_arr[minor])[i];
         printk("pointer number: %d",i);
     printk(KERN_ERR "premortum");
-    printk("%d",entry.channel_id);
+    printk("channel id as seen by get_entry_by_channel_id: %d",entry.channel_id);
     if (entry.channel_id == channel_id) { //@todo check why for the first it always fails
             return &minor_arr[minor][i];
 
@@ -151,7 +151,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
     status=add2list(minor,new_msg);
-    printk("viewed length is :%d,status is :%d",minor_arr[minor]->len,status);
+    printk("A: %d",new_msg.channel_id);
+    printk("viewed length is :%d,status is :%d",size_of_lists[minor],status);
     return i;
 }
 
