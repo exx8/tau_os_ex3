@@ -92,7 +92,7 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
     msg entry = current_list->array_of_msg[i];
         printk("pointer number: %d",i);
     printk(KERN_ERR "premortum");
-    //there is a problem with entry->channel_id
+    printk("%d",entry.channel_id);
     if (entry.channel_id == channel_id) {
             return &current_list->array_of_msg[i];
 
@@ -100,7 +100,7 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
         }
     }
     printk(KERN_ERR "postmortum");
-
+    debug_pointer(current_list);
     return NULL;
 }
 
