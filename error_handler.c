@@ -13,7 +13,7 @@
 
 void error_handler(int status) {
     if (status < 0) {
-        fprintf(stderr, "%s \n", strerror(errno));
+        perror("error:");
         exit(1);
     }
 

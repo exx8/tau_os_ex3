@@ -50,8 +50,10 @@ int main(int argc, char *argv[]) {
     printf("length\n");
     ioctl_status = write(file_status, argv[3], length);
     printf("%d \n",ioctl_status);
-    if (ioctl_status != length)
-        print_error("something went wrong with write");
+    if (ioctl_status != length) {
+        perror("error:");
+        exit(1);
+    }
 
     int close_status = close(file_status);
     printf("close \n");

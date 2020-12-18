@@ -46,6 +46,7 @@ int  add2list( int minor, msg  new_msg)
         return 0;
 
     minor_arr[minor]= newPlace;
+
     for(k=0;k<new_msg.len;k++)
     {
         minor_arr[minor][size_of_lists[minor]-1].msg_value[k]=new_msg.msg_value[k];
