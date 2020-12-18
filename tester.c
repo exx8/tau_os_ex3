@@ -61,12 +61,14 @@ void write_read_null(int fd) {
 	}
 	rc = write(fd, null_bffr, 100);
 	if (rc != -1) {
+
         passed=0;
         fprintf(stderr, "write_read_null: write hasn't failed although he should have\n");
     }
 	rc = read(fd, null_bffr, 100);
 	if (rc != -1) {
         passed=0;
+
         fprintf(stderr, "write_read_null: read hasn't failed although he should have\n");
 	}
     if(passed){

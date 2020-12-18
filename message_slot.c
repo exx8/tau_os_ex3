@@ -90,7 +90,7 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
         printk("pointer number: %d",i);
     printk(KERN_ERR "premortum");
     printk("channel id as seen by get_entry_by_channel_id: %d",entry.channel_id);
-    if (entry.channel_id == channel_id) { //@todo check why for the first it always fails
+    if (entry.channel_id == channel_id) {
         debug(entry.msg_value);
 
         return &minor_arr[minor][i];
@@ -147,12 +147,12 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
     if (no_channel(file))
         return -EINVAL;
+    printk("is buffer NULL %d",buffer==NULL);
     if (buffer == NULL)
         return -EINVAL;
     debug("device write");
     channel_id = ((private_data_type*)file->private_data)->channel_id;
     debug("device write minor");
-
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
 
