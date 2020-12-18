@@ -135,7 +135,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     for (i = 0; i < entry->len; i++) {
         int put_user_status = put_user(entry->msg_value[i], &buffer[i]);
         if (put_user_status != 0)
-            return -EFAULT;
+            return -EINVAL;
     }
     returned = entry->len;
     return returned;
@@ -171,7 +171,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < length; i++) {
         int status_get_user = get_user(priv_buffer[i], &buffer[i]);
         if (status_get_user != 0)
-            return -EFAULT;
+            return -EINVAL;
     }
     status = add2list(minor, new_msg);
     if (!status)
