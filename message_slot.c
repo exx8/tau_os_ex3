@@ -128,8 +128,11 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 
     if (entry->len > length)
         return -ENOSPC;
-    for (i = 0; i < entry->len; i++)
-        put_user(entry->msg_value[i], &buffer[i]);
+    for (i = 0; i < entry->len; i++) {
+        int put_user_status = put_user(entry->msg_value[i], &buffer[i]);
+        if(put_user_status!=0)
+            return -EFAULT;
+    }
     returned = entry->len;
     return returned;
 }
@@ -161,8 +164,11 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     priv_buffer = new_msg.msg_value;
     debug("device write before for");
     printk("%zu",length);
-    for (i = 0; i < length; i++)
-        get_user(priv_buffer[i], &buffer[i]);
+    for (i = 0; i < length; i++) {
+        int status_get_user=get_user(priv_buffer[i], &buffer[i]);
+        if(status_get_user!=0)
+            return -EFAULT;
+    }
     status=add2list(minor,new_msg);
     if(!status)
         return -ENOMEM;
