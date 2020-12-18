@@ -30,6 +30,7 @@ static void debug(char *const fmt) {
     }
 int  add2list( int minor, msg  new_msg)
 {
+    int k;
     void *newPlace;
     size_of_lists[minor]++;
     newPlace= krealloc(minor_arr, size_of_lists[minor]*sizeof(msg **), GFP_KERNEL);
@@ -38,8 +39,11 @@ int  add2list( int minor, msg  new_msg)
         return 0;
 
     minor_arr[minor]= newPlace;
-
-    memcpy(&(minor_arr[minor][size_of_lists[minor]-1]),&new_msg,sizeof(new_msg));
+    for(k=0;k<new_msg.len;k++)
+    {
+        minor_arr[minor][size_of_lists[minor]-1].msg_value[k]=new_msg.msg_value[k];
+    }
+    printk("new_msg is %s, and arr is %s length of msg is %d",new_msg.msg_value,minor_arr[minor][size_of_lists[minor]-1].msg_value,new_msg.len);
     minor_arr[minor][size_of_lists[minor]-1].channel_id=new_msg.channel_id;
 
     minor_arr[minor][size_of_lists[minor]-1].len=new_msg.len;
@@ -82,7 +86,9 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
     printk(KERN_ERR "premortum");
     printk("channel id as seen by get_entry_by_channel_id: %d",entry.channel_id);
     if (entry.channel_id == channel_id) { //@todo check why for the first it always fails
-            return &minor_arr[minor][i];
+        debug(entry.msg_value);
+
+        return &minor_arr[minor][i];
 
 
         }
@@ -117,7 +123,6 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
 
     if (entry->len > length)
         return -ENOSPC;
-    debug("before for of msg read");
     for (i = 0; i < entry->len; i++)
         put_user(entry->msg_value[i], &buffer[i]);
     returned = entry->len;
@@ -147,7 +152,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         return -EMSGSIZE;
 
     new_msg.channel_id=channel_id;//something is wrong here, can't set right channel_id
-
+    new_msg.len=length;
     priv_buffer = new_msg.msg_value;
     debug("device write before for");
     printk("%zu",length);
