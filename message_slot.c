@@ -37,7 +37,9 @@ int  add2list( int minor, msg  new_msg)
 {
     int k;
     void *newPlace;
+    printk(KERN_ERR "minor in add2list is %d",minor);
     size_of_lists[minor]++;
+    debug("pre-realloc");
     newPlace= krealloc(minor_arr, size_of_lists[minor]*sizeof(msg **), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
@@ -87,9 +89,6 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
     for(i=size_of_lists[minor]-1;i>=0;i--)
     {
     msg entry =( minor_arr[minor])[i];
-        printk("pointer number: %d",i);
-    printk(KERN_ERR "premortum");
-    printk("channel id as seen by get_entry_by_channel_id: %d",entry.channel_id);
     if (entry.channel_id == channel_id) {
         debug(entry.msg_value);
 
@@ -146,6 +145,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     int minor;
     int channel_id;
     int status;
+    printk(KERN_ERR "write start, private data address is %p",file->private_data);
     minor = ((private_data_type*)file->private_data)->minor;
     printk("shouldn't be 0: %d",((private_data_type*)file->private_data)->minor);
     if (no_channel(file))
@@ -169,6 +169,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         if(status_get_user!=0)
             return -EFAULT;
     }
+    debug("device write before add2list");
+
     status=add2list(minor,new_msg);
     if(!status)
         return -ENOMEM;
