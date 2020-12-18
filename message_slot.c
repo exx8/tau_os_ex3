@@ -27,6 +27,12 @@ static void debug(char *const fmt) {
     {
     printk(KERN_ERR "%p",pointer);
     }
+    /**
+     *
+     * @param minor
+     * @param new_msg
+     * @return 0 for failure 1 for success
+     */
 int  add2list( int minor, msg  new_msg)
 {
     int k;
@@ -150,7 +156,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     if (length == 0 || length > msg_len)
         return -EMSGSIZE;
 
-    new_msg.channel_id=channel_id;//something is wrong here, can't set right channel_id
+    new_msg.channel_id=channel_id;
     new_msg.len=length;
     priv_buffer = new_msg.msg_value;
     debug("device write before for");
@@ -158,6 +164,8 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     for (i = 0; i < length; i++)
         get_user(priv_buffer[i], &buffer[i]);
     status=add2list(minor,new_msg);
+    if(!status)
+        return -ENOMEM;
     printk("viewed length is :%d,status is :%d",size_of_lists[minor],status);
     return i;
 }
@@ -175,7 +183,7 @@ static long device_ioctl(struct file *file, unsigned int ioctl_command_id, unsig
         return einvalid_ioctl();
     }
 
-    ((private_data_type*)file->private_data)->channel_id = channel_id; //wasn't init
+    ((private_data_type*)file->private_data)->channel_id = channel_id;
 
     return OK;
 }
