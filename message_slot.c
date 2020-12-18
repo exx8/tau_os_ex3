@@ -85,7 +85,7 @@ static bool no_channel(const struct file *file) {
     return ((private_data_type *) file->private_data)->channel_id == NO_CHANNEL;
 }
 
-static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id, unsigned minor) {
+static msg *get_entry_by_channel_id(unsigned int channel_id, unsigned minor) {
     int i = 0;
     printk("size as viewed by get_entry_by_channel_id :%d", size_of_lists[minor]);
     debug_pointer(minor_arr[minor]);
@@ -123,7 +123,7 @@ static ssize_t device_read(struct file *file, char __user *buffer, size_t length
     channel_id = ((private_data_type *) file->private_data)->channel_id;
     minor = ((private_data_type *) file->private_data)->minor;
     printk("read minor: %d", minor);
-    entry = get_entry_by_channel_id(buffer, channel_id, minor);
+    entry = get_entry_by_channel_id(channel_id, minor);
 
     if (entry == NULL) {
         debug("in EWOULDBLOCK");
@@ -173,6 +173,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         if (status_get_user != 0)
             return -EINVAL;
     }
+
     status = add2list(minor, new_msg);
     if (!status)
         return -ENOMEM;
