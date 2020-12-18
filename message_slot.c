@@ -75,7 +75,7 @@ static msg *get_entry_by_channel_id(const char *buffer, unsigned int channel_id,
     int i=0;
     printk("size as viewed by get_entry_by_channel_id :%d",size_of_lists[minor]);
     debug_pointer(minor_arr[minor]);
-    for(i=0;i<size_of_lists[minor];i++)
+    for(i=size_of_lists[minor]-1;i>=0;i--)
     {
     msg entry =( minor_arr[minor])[i];
         printk("pointer number: %d",i);
