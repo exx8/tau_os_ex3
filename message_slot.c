@@ -150,6 +150,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     int minor;
     int channel_id;
     int status;
+    msg * lookup_results;
     minor = ((private_data_type *) file->private_data)->minor;
     printk("shouldn't be 0: %d", ((private_data_type *) file->private_data)->minor);
     if (no_channel(file))
@@ -173,11 +174,18 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
         if (status_get_user != 0)
             return -EINVAL;
     }
+    lookup_results=get_entry_by_channel_id(channel_id,minor);
+    if(lookup_results==NULL) {
+        status = add2list(minor, new_msg);
+        if (!status)
+            return -ENOMEM;
+        printk("viewed length is :%d,status is :%d", size_of_lists[minor], status);
+    }
+    else
+    {
+        *lookup_results=new_msg;
 
-    status = add2list(minor, new_msg);
-    if (!status)
-        return -ENOMEM;
-    printk("viewed length is :%d,status is :%d", size_of_lists[minor], status);
+    }
     return i;
 }
 
