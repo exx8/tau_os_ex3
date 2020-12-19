@@ -14,14 +14,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b3486eb-43ea-4e33-97f5-351fcc46fcf9" name="Default Changelist" comment=".">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="0b3486eb-43ea-4e33-97f5-351fcc46fcf9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/message_slot.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/message_slot.ko" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.ko" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/message_slot.mod.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.mod.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/message_slot.mod.o" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.mod.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/message_slot.o" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tester2.c" beforeDir="false" afterPath="$PROJECT_DIR$/tester2.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +131,7 @@
       <workItem from="1608241993722" duration="31848000" />
       <workItem from="1608329881800" duration="9640000" />
       <workItem from="1608341198065" duration="883000" />
-      <workItem from="1608356105490" duration="10212000" />
+      <workItem from="1608356105490" duration="10633000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1607981573435</created>
@@ -464,7 +462,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608370834297</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary=".">
+      <created>1608373564641</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1608373564641</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
