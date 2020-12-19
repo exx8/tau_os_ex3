@@ -53,7 +53,6 @@ void close_file(int file_status) {
 
 int main(int argc, char *argv[]) {
     int file_status;
-    //change from here.
     char buffer[msg_len];
     unsigned long channel_id=0;
 
