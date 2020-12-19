@@ -33,7 +33,6 @@ void ioctl_call(int ioctl_status, int channel_id, int file_status) {
 }
 
 int main(int argc, char *argv[]) {
-    printf("main \n");
     int ioctl_status=0;
     int channel_id;
     validate_num_of_argc(argc);
@@ -41,22 +40,17 @@ int main(int argc, char *argv[]) {
     int file_status = open_file_for_sender(argv);
     channel_id = get_channel_id(argv);
 
-    printf("ioctl \n");
     ioctl_call(ioctl_status, channel_id, file_status);
-    printf("after ioctl\n");
 
     size_t length;
     length = strlen(argv[3]);
-    printf("length\n");
     ioctl_status = write(file_status, argv[3], length);
-    printf("%d \n",ioctl_status);
     if (ioctl_status != length) {
         perror("error:");
         exit(1);
     }
 
     int close_status = close(file_status);
-    printf("close \n");
 
     error_handler(close_status);
 
