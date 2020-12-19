@@ -1,0 +1,1 @@
+cmd_/home/eran/CLionProjects/tau_os_ex3/message_slot.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/eran/CLionProjects/tau_os_ex3/message_slot.ko /home/eran/CLionProjects/tau_os_ex3/message_slot.o /home/eran/CLionProjects/tau_os_ex3/message_slot.mod.o;  true
