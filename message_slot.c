@@ -249,9 +249,11 @@ static void __exit simple_cleanup(void) {
     // Unregister the device
     // Should always succeed
     int i;
-    for(i=0;i<channel_num;i++)
+    for(i=0;i<channel_num;i++) {
         kfree(minor_arr[i]);
-    kfree(minor_arr);
+        minor_arr[i]=NULL;
+    }
+    //kfree(minor_arr);
     unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
 }
 
