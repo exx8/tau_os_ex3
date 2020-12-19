@@ -8,7 +8,13 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+void error_handler(int status) {
+    if (status < 0) {
+        perror("error:");
+        exit(1);
+    }
 
+}
 void check_num_of_args(int argc) {
     if (argc != 3) {
         fprintf(stderr, "incorrect number of argument\n");

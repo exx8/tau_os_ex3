@@ -11,15 +11,5 @@
 #include <string.h>
 #include <stdio.h>
 
-void error_handler(int status) {
-    if (status < 0) {
-        perror("error:");
-        exit(1);
-    }
 
-}
 
-void print_error(char *str) {
-    fprintf(stderr, "%s \n", str);
-    exit(1);
-}

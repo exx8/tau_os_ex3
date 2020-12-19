@@ -14,12 +14,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b3486eb-43ea-4e33-97f5-351fcc46fcf9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/message_slot.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_slot.ko" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.ko" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_slot.mod.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.mod.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_slot.mod.o" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.mod.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_slot.o" beforeDir="false" afterPath="$PROJECT_DIR$/message_slot.o" afterDir="false" />
+    <list default="true" id="0b3486eb-43ea-4e33-97f5-351fcc46fcf9" name="Default Changelist" comment="remove debug. printk and debug_pointer">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/error_handler.c" beforeDir="false" afterPath="$PROJECT_DIR$/error_handler.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_reader.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_reader.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_reader.out" beforeDir="false" afterPath="$PROJECT_DIR$/message_reader.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_sender.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_sender.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_sender.out" beforeDir="false" afterPath="$PROJECT_DIR$/message_sender.out" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,14 +132,7 @@
       <workItem from="1608241993722" duration="31848000" />
       <workItem from="1608329881800" duration="9640000" />
       <workItem from="1608341198065" duration="883000" />
-      <workItem from="1608356105490" duration="10633000" />
-    </task>
-    <task id="LOCAL-00001" summary=".">
-      <created>1607981573435</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1607981573435</updated>
+      <workItem from="1608356105490" duration="11256000" />
     </task>
     <task id="LOCAL-00002" summary=".">
       <created>1607983180949</created>
@@ -469,7 +463,21 @@
       <option name="project" value="LOCAL" />
       <updated>1608373564641</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="remove debug. printk and debug_pointer">
+      <created>1608373716435</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1608373716435</updated>
+    </task>
+    <task id="LOCAL-00050" summary="remove debug. printk and debug_pointer">
+      <created>1608373777477</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1608373777477</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,6 +501,7 @@
     <MESSAGE value="just nulling it." />
     <MESSAGE value="fix the segfault on release credit to yuval!" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="remove debug. printk and debug_pointer" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove debug. printk and debug_pointer" />
   </component>
 </project>

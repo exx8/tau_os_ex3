@@ -5,8 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "error_handler.h"
+void error_handler(int status) {
+    if (status < 0) {
+        perror("error:");
+        exit(1);
+    }
 
+}
 void validate_num_of_argc(int argc) {
     if (argc != 4) {
         fprintf(stderr, "incorrect num of arguments\n");
@@ -15,7 +20,6 @@ void validate_num_of_argc(int argc) {
 }
 
 int open_file_for_sender(char *const *argv) {
-    printf("open");
     int file_status = open(argv[1], O_WRONLY);
     error_handler(file_status);
     return file_status;
