@@ -15,12 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b3486eb-43ea-4e33-97f5-351fcc46fcf9" name="Default Changelist" comment="remove debug. printk and debug_pointer">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/error_handler.c" beforeDir="false" afterPath="$PROJECT_DIR$/error_handler.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/message_reader.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_reader.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_reader.out" beforeDir="false" afterPath="$PROJECT_DIR$/message_reader.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_sender.c" beforeDir="false" afterPath="$PROJECT_DIR$/message_sender.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_sender.out" beforeDir="false" afterPath="$PROJECT_DIR$/message_sender.out" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,11 +95,6 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -133,6 +123,7 @@
       <workItem from="1608329881800" duration="9640000" />
       <workItem from="1608341198065" duration="883000" />
       <workItem from="1608356105490" duration="11256000" />
+      <workItem from="1608380085619" duration="20000" />
     </task>
     <task id="LOCAL-00002" summary=".">
       <created>1607983180949</created>

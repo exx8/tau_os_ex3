@@ -1,9 +1,7 @@
 #include <stdio.h>
-#include <string.h>
-#include <errno.h>
+
 #include <stdlib.h>
 #include "message_slot.h"
-#include "error_handler.h"
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
