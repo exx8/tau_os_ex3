@@ -249,14 +249,15 @@ static void __exit simple_cleanup(void) {
     // Unregister the device
     // Should always succeed
     int i;
-    if(minor_arr==NULL)
-        return;
-    for(i=0;i<channel_num;i++) {
-        printk(KERN_ERR"freeing the first %d",i);
-        if(minor_arr[i]!=NULL)
-        kfree(minor_arr[i]);
+    if(minor_arr!=NULL) {
+        for (i = 0; i < channel_num; i++) {
+            printk(KERN_ERR"freeing the first %d", i);
+            if (minor_arr[i] != NULL)
+                kfree(minor_arr[i]);
+            size_of_lists[i] = 0;
+        }
+        kfree(minor_arr);
     }
-    kfree(minor_arr);
     unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
 }
 
