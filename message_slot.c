@@ -40,7 +40,7 @@ int  add2list( int minor, msg  new_msg)
     printk(KERN_ERR "minor in add2list is %d",minor);
     size_of_lists[minor]++;
     debug("pre-realloc");
-    newPlace= krealloc(minor_arr, size_of_lists[minor]*sizeof(msg **), GFP_KERNEL);
+    newPlace= krealloc(minor_arr[minor], size_of_lists[minor]*sizeof(msg ), GFP_KERNEL);
     printk("resize complete");
     if(newPlace==NULL)
         return 0;
