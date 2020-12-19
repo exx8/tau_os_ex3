@@ -22,9 +22,11 @@ typedef struct {
 static int size_of_lists[channel_num];
 static  msg **minor_arr;
 static void debug(char *const fmt) {
+    return;
     printk(KERN_ERR "%s", fmt); }
     static void debug_pointer(void * pointer)
     {
+    return;
     printk(KERN_ERR "%p",pointer);
     }
     /**
@@ -42,9 +44,10 @@ int  add2list( int minor, msg  new_msg)
     debug("pre-realloc");
     newPlace= krealloc(minor_arr[minor], size_of_lists[minor]*sizeof(msg ), GFP_KERNEL);
     printk("resize complete");
-    if(newPlace==NULL)
+    if(newPlace==NULL) {
+        printk(KERN_ERR "null has been reached");
         return 0;
-
+    }
     minor_arr[minor]= newPlace;
 
     for(k=0;k<new_msg.len;k++)

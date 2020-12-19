@@ -11,7 +11,7 @@
 #include "math.h"
 
 #define BUFF_SIZE 128
-int DEBUG = 1; /*change to 1 to see PASSING tests*/
+int DEBUG = 0; /*change to 1 to see PASSING tests*/
 int status=1;
 char* channels_msg[1024];
 
@@ -163,11 +163,9 @@ int perform_random_move(int fd){
 
     switch (move) {
         case 0:
-            printf("reading %d \n",fd);
             rc=perform_random_read(fd);
             break;
         case 1:
-            printf("writing %d \n",fd);
             rc=perform_random_write(fd);
             break;
     }
@@ -179,7 +177,7 @@ int perform_random_move(int fd){
 void random_write_read(int fd) {
     printf("\n----- random_write_read ---------- \n");
     memset(&channels_msg,0, sizeof(channels_msg));
-    for (int i = 0; i <1; i++) {
+    for (int i = 0; i < pow(2, 18); i++) {
         if(DEBUG){fprintf(stderr,"iteration number %d .",i);}
         if(-1==perform_random_move(fd)){
             return;
