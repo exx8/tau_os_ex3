@@ -13,13 +13,13 @@ typedef struct {
     unsigned int minor;
 } private_data_type;
 typedef struct {
-    char msg_value[msg_len];
+    char msg_value[MSG_LEN];
     short len;
     unsigned int channel_id;
 
 } msg;
 
-static int size_of_lists[channel_num];
+static int size_of_lists[CHANNEL_NUM];
 static  msg **minor_arr;
 
 
@@ -63,7 +63,7 @@ static int device_open(struct inode *inode, struct file *file) {
     unsigned int minor;
     private_data_type  * private_data=kcalloc(sizeof(private_data),1,GFP_KERNEL);
     if(minor_arr==NULL)
-    minor_arr = kcalloc(sizeof(*minor_arr), channel_num, GFP_KERNEL);
+    minor_arr = kcalloc(sizeof(*minor_arr), CHANNEL_NUM, GFP_KERNEL);
     minor = get_minor(inode);
     printk("open minor %d \n",minor);
     private_data->minor=minor;
@@ -137,7 +137,7 @@ static ssize_t device_write(struct file *file, const char __user *buffer, size_t
     if (buffer == NULL)
         return -EINVAL;
     channel_id = ((private_data_type*)file->private_data)->channel_id;
-    if (length == 0 || length > msg_len)
+    if (length == 0 || length > MSG_LEN)
         return -EMSGSIZE;
 
     new_msg.channel_id=channel_id;
@@ -217,7 +217,7 @@ static void __exit simple_cleanup(void) {
     // Should always succeed
     int i;
     if(minor_arr!=NULL) {
-        for (i = 0; i < channel_num; i++) {
+        for (i = 0; i < CHANNEL_NUM; i++) {
             if (minor_arr[i] != NULL)
                 kfree(minor_arr[i]);
             size_of_lists[i] = 0;
