@@ -36,7 +36,7 @@ void set_channel(char *const *argv, int file_status, unsigned long channel_id) {
 int read_msg(int file_status, char *buffer) {
     int read_status;
 
-    read_status = read(file_status, buffer, msg_len);
+    read_status = read(file_status, buffer, MSG_LEN);
     error_handler(read_status);
     return read_status;
 }
@@ -53,7 +53,7 @@ void close_file(int file_status) {
 
 int main(int argc, char *argv[]) {
     int file_status;
-    char buffer[msg_len];
+    char buffer[MSG_LEN];
     unsigned long channel_id=0;
 
     check_num_of_args(argc);
